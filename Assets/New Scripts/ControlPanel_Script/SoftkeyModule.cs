@@ -122,6 +122,42 @@ public class SoftkeyModule : MonoBehaviour {
 				if(Main.ProgAUTOFlip==5)//“下一段”页返回“程序”页
 					Main.ProgAUTOFlip=0;
 			}//增加内容到此
+			if(Main.ProgMDI)//内容--MDI模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgMDIFlip==1)
+					Main.ProgMDIFlip=0;
+				else if(Main.ProgMDIFlip==2)
+					Main.ProgMDIFlip=1;
+				else if(Main.ProgMDIFlip==3)
+					Main.ProgMDIFlip=1;
+			}
+			if(Main.ProgDNC)//内容--DNC模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgDNCFlip==1)
+					Main.ProgDNCFlip=0;
+				else if(Main.ProgDNCFlip==2)
+					Main.ProgDNCFlip=1;
+				else if(Main.ProgDNCFlip==3)
+					Main.ProgDNCFlip=1;
+			}
+			if(Main.ProgHAN)//内容--HAN模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgHANFlip==1)
+					Main.ProgHANFlip=0;
+				else if(Main.ProgHANFlip==2)
+					Main.ProgHANFlip=1;
+				else if(Main.ProgHANFlip==3)
+					Main.ProgHANFlip=1;
+			}
+			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+		    {
+				if(Main.ProgSharedFlip==1)
+					Main.ProgSharedFlip=0;
+				else if(Main.ProgSharedFlip==2)
+					Main.ProgSharedFlip=1;
+				else if(Main.ProgSharedFlip==3)
+					Main.ProgSharedFlip=1;
+			}
 		}
 		//设置界面时按下
 		if(Main.SettingMenu)
@@ -196,6 +232,42 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.ProgAUTOFlip=0;
 				if(Main.ProgAUTOFlip==4)//“相对”页，按下“绝对”按钮，转到“绝对”页
 					Main.ProgAUTOFlip=2;
+			}
+			if(Main.ProgMDI)//内容--MDI模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgMDIFlip==0)
+					Main.ProgMDIFlip=1;
+				else if(Main.ProgMDIFlip==2)
+					Main.ProgMDIFlip=1;
+				else if(Main.ProgMDIFlip==3)
+					Main.ProgMDIFlip=1;
+			}
+			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgDNCFlip==0)
+					Main.ProgDNCFlip=1;
+				else if(Main.ProgDNCFlip==2)
+					Main.ProgDNCFlip=1;
+				else if(Main.ProgDNCFlip==3)
+					Main.ProgDNCFlip=1;
+			}
+			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgHANFlip==0)
+					Main.ProgHANFlip=1;
+				else if(Main.ProgHANFlip==2)
+					Main.ProgHANFlip=1;
+				else if(Main.ProgHANFlip==3)
+					Main.ProgHANFlip=1;
+			}
+			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgSharedFlip==0)
+					Main.ProgSharedFlip=1;
+				else if(Main.ProgSharedFlip==2)
+					Main.ProgSharedFlip=1;
+				else if(Main.ProgSharedFlip==3)
+					Main.ProgSharedFlip=1;
 			}
 		}
 		//设置界面时按下
@@ -935,10 +1007,42 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.ProgAUTOFlip=3;
 			}//增加能容到此
 			
-			
-			
-			
-				
+			if(Main.ProgMDI)//内容--MDI模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+			     if(Main.ProgMDIFlip==0)
+					Main.ProgMDIFlip=2;
+				else if(Main.ProgMDIFlip==1)
+					Main.ProgMDIFlip=2;
+				else if(Main.ProgMDIFlip==3)
+					Main.ProgMDIFlip=2;
+			}
+			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+			     if(Main.ProgDNCFlip==0)
+					Main.ProgDNCFlip=2;
+				else if(Main.ProgDNCFlip==1)
+					Main.ProgDNCFlip=2;
+				else if(Main.ProgDNCFlip==3)
+					Main.ProgDNCFlip=2;
+			}
+			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+			     if(Main.ProgHANFlip==0)
+					Main.ProgHANFlip=2;
+				else if(Main.ProgHANFlip==1)
+					Main.ProgHANFlip=2;
+				else if(Main.ProgHANFlip==3)
+					Main.ProgHANFlip=2;
+			}
+			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+			     if(Main.ProgSharedFlip==0)
+					Main.ProgSharedFlip=2;
+				else if(Main.ProgSharedFlip==1)
+					Main.ProgSharedFlip=2;
+				else if(Main.ProgSharedFlip==3)
+					Main.ProgSharedFlip=2;
+			}	
 		}
 		//设置界面时按下
 		if(Main.SettingMenu)
@@ -991,6 +1095,42 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.ProgAUTOFlip=5;
 				else if(Main.ProgAUTOFlip==3)//“当前段”页，按下“下一段”按钮，转到“下一段”页
 					Main.ProgAUTOFlip=5;
+			}
+			if(Main.ProgMDI)//内容--MDI模式下，程序界面，第四个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgMDIFlip==0)
+					Main.ProgMDIFlip=3;
+				else if(Main.ProgMDIFlip==1)
+					Main.ProgMDIFlip=3;
+				else if(Main.ProgMDIFlip==2)
+					Main.ProgMDIFlip=3;
+			}
+			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第四个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgDNCFlip==0)
+					Main.ProgDNCFlip=3;
+				else if(Main.ProgDNCFlip==1)
+					Main.ProgDNCFlip=3;
+				else if(Main.ProgDNCFlip==2)
+					Main.ProgDNCFlip=3;
+			}
+			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第四个按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgHANFlip==0)
+					Main.ProgHANFlip=3;
+				else if(Main.ProgHANFlip==1)
+					Main.ProgHANFlip=3;
+				else if(Main.ProgHANFlip==2)
+					Main.ProgHANFlip=3;
+			}
+			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgSharedFlip==0)
+					Main.ProgSharedFlip=3;
+				else if(Main.ProgSharedFlip==1)
+					Main.ProgSharedFlip=3;
+				else if(Main.ProgSharedFlip==2)
+					Main.ProgSharedFlip=3;
 			}
 		}
 		
@@ -1131,7 +1271,42 @@ public class SoftkeyModule : MonoBehaviour {
 				else if(Main.ProgAUTOFlip==5)//内容--“下一段”页，按“+”按钮，返回“操作”页，姓名--刘旋，时间--2013-4-11
 					Main.ProgAUTOFlip=1;
 			}
-			
+			if(Main.ProgMDI)//内容--MDI模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgMDIFlip==0)
+					Main.ProgMDIFlip=1;
+				else if(Main.ProgMDIFlip==1)
+					Main.ProgMDIFlip=2;
+				else if(Main.ProgMDIFlip==2)
+					Main.ProgMDIFlip=3;
+			}
+			if(Main.ProgDNC)//内容--DNC模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgDNCFlip==0)
+					Main.ProgDNCFlip=1;
+				else if(Main.ProgDNCFlip==1)
+					Main.ProgDNCFlip=2;
+				else if(Main.ProgDNCFlip==2)
+					Main.ProgDNCFlip=3;
+			}
+			if(Main.ProgHAN)//内容--HAN模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgHANFlip==0)
+					Main.ProgHANFlip=1;
+				else if(Main.ProgHANFlip==1)
+					Main.ProgHANFlip=2;
+				else if(Main.ProgHANFlip==2)
+					Main.ProgHANFlip=3;
+			}
+			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
+			{
+				if(Main.ProgSharedFlip==0)
+					Main.ProgSharedFlip=1;
+				else if(Main.ProgSharedFlip==1)
+					Main.ProgSharedFlip=2;
+				else if(Main.ProgSharedFlip==2)
+					Main.ProgSharedFlip=3;
+			}
 		}
 		
 		if(Main.SettingMenu)
