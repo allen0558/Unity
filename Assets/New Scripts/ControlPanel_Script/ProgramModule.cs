@@ -36,21 +36,6 @@ public class ProgramModule : MonoBehaviour {
 		{
 			ProgShared();
 		}
-		//内容--MDI模式，姓名--刘旋，时间--2013-4-22
-		if(Main.ProgMDI)
-		{
-			ProgMDIWindow();
-		}
-		//内容--DNC模式，姓名--刘旋，时间--2013-4-22
-		if(Main.ProgDNC)
-		{
-			ProgDNCWindow();
-		}
-		//内容--Handle模式，姓名--刘旋，时间--2013-4-22
-		if(Main.ProgHAN)
-		{
-			ProgHANWindow();
-		}
 	}
 	
 	//编辑窗口
@@ -333,8 +318,33 @@ public class ProgramModule : MonoBehaviour {
 		//姓名--刘旋，时间--2013-3-25
 		if (Main.ProgAUTOFlip==0)
 		{
-			ProgramInterface();
+			GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
+			GUI.Label(new Rect(45f/1000f*Main.width,90f/1000f*Main.height,490f/1000f*Main.width,245f/1000f*Main.height),"", Main.sty_ProgSharedWindow);
+			
+			if(Main.Code01 != "")
+			    GUI.Label(new Rect(32f, Main.ProgEDITCusorV/1000f*Main.height, 480f/1000f*Main.width, 25f/1000f*Main.height),"", Main.sty_EDITCursor);
+		    GUI.Label(new Rect(46f/1000f*Main.width,100f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code01, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,125f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code02, Main.sty_Code);			
+		    GUI.Label(new Rect(46f/1000f*Main.width,150f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code03, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,175f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code04, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,200f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code05, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,225f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code06, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,250f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code07, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,275f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code08, Main.sty_Code);
+		    GUI.Label(new Rect(46f/1000f*Main.width,300f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code09, Main.sty_Code);
+			
+			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_d;
+			Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
+			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
+			GUI.Label(new Rect(83f/1000f*Main.width,421f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);//内容--按下时高度值加1，姓名--刘旋，时间--2013-4-9
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"检测", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(347f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
 		}
 		else if (Main.ProgAUTOFlip==1)
 		{
@@ -414,12 +424,58 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(85f/1000f*Main.width,421f/1000f*Main.height,70f/1000f*Main.width,25f/1000f*Main.height),"绝对", Main.sty_BottomChooseMenu);//内容--按下时高度值加1，姓名--刘旋，时间--2013-4-9
 		    GUI.Label(new Rect(176f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"相对", Main.sty_BottomChooseMenu);
 		    GUI.Label(new Rect(423f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操 作）", Main.sty_BottomChooseMenu);
-
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
 		}
 		else if (Main.ProgAUTOFlip==3)
 		{
-			CurrentParagraph();
+			GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
+			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
+			GUI.Label(new Rect(291f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
+			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,25f/1000f*Main.height),"", Main.sty_TopLabel);
+			GUI.Label(new Rect(291f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,25f/1000f*Main.height),"", Main.sty_TopLabel);
+			GUI.Label(new Rect(130f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_Title);
+			GUI.Label(new Rect(386f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"模态", Main.sty_Title);
+			
+			GUI.Label(new Rect(42f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00", Main.sty_Code);
+		    GUI.Label(new Rect(42f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90", Main.sty_Code);
+			GUI.Label(new Rect(108f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"X", Main.sty_SmallXYZ);
+		    GUI.Label(new Rect(128f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.x), Main.sty_SmallNum);
+		    GUI.Label(new Rect(108f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Y", Main.sty_SmallXYZ);
+		    GUI.Label(new Rect(128f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.y), Main.sty_SmallNum);
+		    GUI.Label(new Rect(108f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Z", Main.sty_SmallXYZ);
+		    GUI.Label(new Rect(128f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.z), Main.sty_SmallNum);
+			
+			GUI.Label(new Rect(292f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00   G97", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G17   G54", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90   G64", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,163f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G22   G69", Main.sty_Code);	
+			GUI.Label(new Rect(292f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G94   G15", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,213f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G21   G40.1", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G40   G25", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G98   G50.1", Main.sty_Code);	
+			GUI.Label(new Rect(292f/1000f*Main.width,288f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G50   G54.2", Main.sty_Code);
+		    GUI.Label(new Rect(292f/1000f*Main.width,313f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G67   G80.5", Main.sty_Code);
+			
+			GUI.Label(new Rect(446f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "F", Main.sty_Mode);
+		    GUI.Label(new Rect(446f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "M", Main.sty_Mode);
+			GUI.Label(new Rect(446f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "H", Main.sty_Mode);
+			GUI.Label(new Rect(446f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "T", Main.sty_Mode);
+		    GUI.Label(new Rect(446f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "S", Main.sty_Mode);
+			GUI.Label(new Rect(496f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "D", Main.sty_Mode);
+			
+			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_u;
+		    Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;	
+		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_d;
+		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
+		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
+			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
+		    GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
+			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"检测", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(257f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);//内容--按下时高度值加1，姓名--刘旋，时间--2013-4-9
+			GUI.Label(new Rect(347f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
 		}//修改内容到此
 		else if(Main.ProgAUTOFlip==4)
 		{
@@ -469,224 +525,11 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(85f/1000f*Main.width,420f/1000f*Main.height,70f/1000f*Main.width,25f/1000f*Main.height),"绝对", Main.sty_BottomChooseMenu);//内容--按下时高度值加1，姓名--刘旋，时间--2013-4-9
 		    GUI.Label(new Rect(176f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"相对", Main.sty_BottomChooseMenu);
 		    GUI.Label(new Rect(423f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操 作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
 		}
 		else if(Main.ProgAUTOFlip==5)
 		{
-			NextParagraph();
-			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"检测", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
-		}
-	}
-	
-	//显示Handle、Jog、Ref模式下的程序界面
-	void ProgShared () 
-	{
-		if(Main.ProgSharedFlip==0)
-		{
-			ModeEditInterface();
-			if(Main.ProgJOG)
-			{
-			    GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(JOG)", Main.sty_BottomAST);
-				GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"JOG", Main.sty_BottomChooseMenu);
-			}
-			else
-			{
-				GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(REF)", Main.sty_BottomAST);
-				GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"REF", Main.sty_BottomChooseMenu);
-			}
-		}
-		if(Main.ProgSharedFlip==1)
-		{
-			ProgramInterface();
-		}
-		if(Main.ProgSharedFlip==2)
-		{
-			CurrentParagraph();
-		}
-		if(Main.ProgSharedFlip==3)
-		{
-			NextParagraph();
-		}
-	}
-	void ProgMDIWindow()
-	{
-		if(Main.ProgMDIFlip==0)
-		{
-			ModeEditInterface();
-			GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(MDI)", Main.sty_BottomAST);
-			GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"MDI", Main.sty_BottomChooseMenu);
-		}
-		if(Main.ProgMDIFlip==1)
-		{
-			ProgramInterface();
-		}
-		if(Main.ProgMDIFlip==2)
-		{
-			CurrentParagraph();
-		}
-		if(Main.ProgMDIFlip==3)
-		{
-			NextParagraph();
-		}
-	}
-	void ProgDNCWindow()
-	{
-		if(Main.ProgDNCFlip==0)
-		{
-			ModeEditInterface();
-			GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(DNC)", Main.sty_BottomAST);
-			GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"DNC", Main.sty_BottomChooseMenu);
-		}
-		if(Main.ProgDNCFlip==1)
-		{
-			ProgramInterface();
-		}
-		if(Main.ProgDNCFlip==2)
-		{
-			CurrentParagraph();
-		}
-		if(Main.ProgDNCFlip==3)
-		{
-			NextParagraph();
-		}
-	}
-	void ProgHANWindow()
-	{
-		if(Main.ProgHANFlip==0)
-		{
-			ModeEditInterface();
-			GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(HAN)", Main.sty_BottomAST);
-			GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"HAN", Main.sty_BottomChooseMenu);
-		}
-		if(Main.ProgHANFlip==1)
-		{
-			ProgramInterface();
-		}
-		if(Main.ProgHANFlip==2)
-		{
-			CurrentParagraph();
-		}
-		if(Main.ProgHANFlip==3)
-		{
-			NextParagraph();
-		}
-	}
-	void ModeEditInterface()
-	{
-			GUI.Label(new Rect(45f/1000f*Main.width,70f/1000f*Main.height,465f/1000f*Main.width,243f/1000f*Main.height),"", Main.sty_EDITLabelWindow);
-		    GUI.Label(new Rect(513f/1000f*Main.width,70f/1000f*Main.height,23f/1000f*Main.width,23f/1000f*Main.height),"", Main.sty_EDITLabelBar_1);
-		    GUI.Label(new Rect(513f/1000f*Main.width,94f/1000f*Main.height,23f/1000f*Main.width,191f/1000f*Main.height),"", Main.sty_EDITLabelBar_2);
-		    GUI.Label(new Rect(513f/1000f*Main.width,286f/1000f*Main.height,23f/1000f*Main.width,23f/1000f*Main.height),"", Main.sty_EDITLabelBar_3);
-		    GUI.Label(new Rect(40f/1000f*Main.width,322f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"实速度         MM/MIN", Main.sty_MostWords);
-		    GUI.Label(new Rect(113f/1000f*Main.width,321f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.NumberFormat(Main.RunningSpeed), Main.sty_SmallNum);
-		    GUI.Label(new Rect(310f/1000f*Main.width,322f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"SACT         /分", Main.sty_MostWords);
-		    GUI.Label(new Rect(365f/1000f*Main.width,321f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.NumberFormat(Main.SACT), Main.sty_SmallNum);
-			if(Main.Code01 != "")
-			    GUI.Label(new Rect(Main.ProgEDITCusorH, Main.ProgEDITCusorV/1000f*Main.height-25f/1000f*Main.height, Main.TextSize.x + 3f, 25f/1000f*Main.height),"", Main.sty_EDITCursor);
-		    GUI.Label(new Rect(46f/1000f*Main.width,75f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code01, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,100f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code02, Main.sty_Code);			
-		    GUI.Label(new Rect(46f/1000f*Main.width,125f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code03, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,150f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code04, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,175f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code05, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,200f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code06, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,225f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code07, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,250f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code08, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,275f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code09, Main.sty_Code);
-			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_d;	
-		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			
-			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(347f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
-	}
-	void ProgramInterface()
-	{
-		    GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
-			GUI.Label(new Rect(45f/1000f*Main.width,90f/1000f*Main.height,490f/1000f*Main.width,245f/1000f*Main.height),"", Main.sty_ProgSharedWindow);
-			
-			if(Main.Code01 != "")
-			    GUI.Label(new Rect(32f, Main.ProgEDITCusorV/1000f*Main.height, 480f/1000f*Main.width, 25f/1000f*Main.height),"", Main.sty_EDITCursor);
-		    GUI.Label(new Rect(46f/1000f*Main.width,100f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code01, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,125f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code02, Main.sty_Code);			
-		    GUI.Label(new Rect(46f/1000f*Main.width,150f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code03, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,175f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code04, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,200f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code05, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,225f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code06, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,250f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code07, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,275f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code08, Main.sty_Code);
-		    GUI.Label(new Rect(46f/1000f*Main.width,300f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code09, Main.sty_Code);
-			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_d;
-		    Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;	
-		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
-			GUI.Label(new Rect(83f/1000f*Main.width,421f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(347f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
-	}
-	void CurrentParagraph()
-	{
-		    GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
-			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
-			GUI.Label(new Rect(291f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
-			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,25f/1000f*Main.height),"", Main.sty_TopLabel);
-			GUI.Label(new Rect(291f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,25f/1000f*Main.height),"", Main.sty_TopLabel);
-			GUI.Label(new Rect(130f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_Title);
-			GUI.Label(new Rect(386f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"模态", Main.sty_Title);
-			
-			GUI.Label(new Rect(42f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00", Main.sty_Code);
-		    GUI.Label(new Rect(42f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90", Main.sty_Code);
-			GUI.Label(new Rect(108f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"X", Main.sty_SmallXYZ);
-		    GUI.Label(new Rect(128f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.x), Main.sty_SmallNum);
-		    GUI.Label(new Rect(108f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Y", Main.sty_SmallXYZ);
-		    GUI.Label(new Rect(128f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.y), Main.sty_SmallNum);
-		    GUI.Label(new Rect(108f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Z", Main.sty_SmallXYZ);
-		    GUI.Label(new Rect(128f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.z), Main.sty_SmallNum);
-			
-			GUI.Label(new Rect(292f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00   G97", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G17   G54", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90   G64", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,163f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G22   G69", Main.sty_Code);	
-			GUI.Label(new Rect(292f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G94   G15", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,213f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G21   G40.1", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G40   G25", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G98   G50.1", Main.sty_Code);	
-			GUI.Label(new Rect(292f/1000f*Main.width,288f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G50   G54.2", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,313f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G67   G80.5", Main.sty_Code);
-			
-			GUI.Label(new Rect(446f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "F", Main.sty_Mode);
-		    GUI.Label(new Rect(446f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "M", Main.sty_Mode);
-			GUI.Label(new Rect(446f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "H", Main.sty_Mode);
-			GUI.Label(new Rect(446f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "T", Main.sty_Mode);
-		    GUI.Label(new Rect(446f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "S", Main.sty_Mode);
-			GUI.Label(new Rect(496f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "D", Main.sty_Mode);
-			
-			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;	
-		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_d;
-		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
-		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
-		    GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
-			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(257f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(347f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
-	}
-	void NextParagraph()
-	{
-		    GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
+			GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
 			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
 			GUI.Label(new Rect(291f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,285f/1000f*Main.height),"", Main.sty_EDITList);
 			GUI.Label(new Rect(40f/1000f*Main.width,60f/1000f*Main.height,249f/1000f*Main.width,25f/1000f*Main.height),"", Main.sty_TopLabel);
@@ -702,11 +545,60 @@ public class ProgramModule : MonoBehaviour {
 			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
 		    GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
 			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
-			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"检测", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);//内容--按下时高度值加1，姓名--刘旋，时间--2013-4-9
 			GUI.Label(new Rect(347f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
+		}
 	}
+	
+	//显示Handle、Jog、Ref模式下的程序界面
+	void ProgShared () 
+	{
+		GUI.Label(new Rect(40f/1000f*Main.width,28f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序", Main.sty_Title);
+		GUI.Label(new Rect(45f/1000f*Main.width,90f/1000f*Main.height,490f/1000f*Main.width,245f/1000f*Main.height),"", Main.sty_ProgSharedWindow);
+		if(Main.Code01 != "")
+			GUI.Label(new Rect(32f, Main.ProgEDITCusorV/1000f*Main.height, 480f/1000f*Main.width, 25f/1000f*Main.height),"", Main.sty_EDITCursor);
+		GUI.Label(new Rect(46f/1000f*Main.width,100f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code01, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,125f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code02, Main.sty_Code);			
+		GUI.Label(new Rect(46f/1000f*Main.width,150f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code03, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,175f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code04, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,200f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code05, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,225f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code06, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,250f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code07, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,275f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code08, Main.sty_Code);
+		GUI.Label(new Rect(46f/1000f*Main.width,300f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.Code09, Main.sty_Code);
+
+		if(Main.ProgSharedFlip == 0)
+		{
+			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_d;
+			Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
+			GUI.Label(new Rect(88f/1000f*Main.width,421f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(255f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(345f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
+		}
+		else
+		{
+			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_d;
+			Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
+			Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
+			GUI.Label(new Rect(88f/1000f*Main.width,421f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(255f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(345f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
+			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
+		}
+	}
+	
+	
 	// Update is called once per frame
 	void Update () {
 	
