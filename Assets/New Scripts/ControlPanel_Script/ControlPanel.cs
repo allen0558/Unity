@@ -242,6 +242,12 @@ public class ControlPanel : MonoBehaviour {
 	public bool ProgEDITList = false;
 	public int ProgEDITFlip = 0;
 	public int ProgSharedFlip = 0;
+	//内容--定义变量ProgMDIFlip，用于控制MDI模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgMDIFlip=0;
+	//内容--定义变量ProgDNCFlip，用于控制DNC模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgDNCFlip=0;
+	//内容--定义变量ProgHANFlip，用于控制Handle模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgHANFlip=0;
 	//内容--定义变量ProgAUTOFlip，用于控制AUTO模式下屏幕的显示
 	//姓名--刘旋，时间--2013-3-25
 	public int ProgAUTOFlip=0;
@@ -866,7 +872,7 @@ public class ControlPanel : MonoBehaviour {
 				Program_Script.Program();
 			}
 			
-			//设置界面
+			//设置界面 
 			if(SettingMenu)
 			{
 				//Offset模块显示
