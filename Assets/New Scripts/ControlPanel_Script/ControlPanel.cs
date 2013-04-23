@@ -154,6 +154,7 @@ public class ControlPanel : MonoBehaviour {
 	//内容--定义sty-Mode，用于显示模态
 	//姓名--刘旋，时间--2013-3-29
 	public GUIStyle sty_Mode;
+	public GUIStyle sty_ModeCode;
 	
 	//button按钮style
 	public GUIStyle sty_NCPowerOn;
@@ -745,9 +746,12 @@ public class ControlPanel : MonoBehaviour {
 		sty_Code.fontSize = 17;
 		sty_Code.fontStyle = FontStyle.Bold;
 		
+		sty_ModeCode.fontSize=15;
+		sty_ModeCode.fontStyle=FontStyle.Bold;
+		
 		//内容--sty-Mode赋值为蓝色
 		//姓名--刘旋，时间--2013-3-29
-		sty_Mode.fontSize=17;
+		sty_Mode.fontSize=15;
 		sty_Mode.fontStyle=FontStyle.Bold;
 		sty_Mode.normal.textColor=Color.blue;
 		
