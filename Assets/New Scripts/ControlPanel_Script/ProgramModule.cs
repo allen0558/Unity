@@ -1,13 +1,37 @@
 ﻿using UnityEngine;
+using System;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ProgramModule : MonoBehaviour {
 	ControlPanel Main;
 	CooSystem CooSystem_script;
+	public string[] ModeState=new string[24];//内容--定义string数组ModeState，用于存放模态代码，姓名--刘旋，时间2013-4-23
+	public string[] temp_ModeState=new string[24];//内容--定义string数组temp-ModeState，用于存放新的模态代码，姓名--刘旋，时间2013-4-23
+	public float ModeCursorH=0;//内容--模态的水平坐标，用于模态代码的显示位置和蓝色光标的显示位置，姓名--刘旋，时间2013-4-23
+	public float ModeCursorV=0;//内容--模态的垂直坐标，用于模态代码的显示位置和蓝色光标的显示位置，姓名--刘旋，时间2013-4-23
+	public bool[] light_flag=new bool[24];//内容--模态的状态，ModeState与temp-ModeState进行比较，模态代码有变动时，相应的模态的状态为真，姓名--刘旋，时间2013-4-23
+	public List<int> lightup_list=new List<int>();//内容--用于存放有变动的模态的编号，姓名--刘旋，时间2013-4-23
+	public int para_det;//内容--1表示当前段，0表示检测（包括绝对和相对），姓名--刘旋，时间2013-4-23
 	// Use this for initialization
 	void Start () {
 		Main = gameObject.GetComponent<ControlPanel>();
 		CooSystem_script = gameObject.GetComponent<CooSystem>();
+		for(int i=0;i<24;i++)
+			light_flag[i]=false;//内容--模态的状态，初始化为假，姓名--刘旋，时间2013-4-23
+		//内容--模态代码的初始化，当前段中，第一列编号为0-11，第二列编号为12-23，姓名--刘旋，时间2013-4-23
+		ModeState[0]="G03";ModeState[1]="G17";ModeState[2]="G90";ModeState[3]="G22";
+		ModeState[4]="G94";ModeState[5]="G21";ModeState[6]="G41";ModeState[7]="G43";
+		ModeState[8]="G80";ModeState[9]="G98";ModeState[10]="G50";ModeState[11]="G67";
+		ModeState[12]="G97";ModeState[13]="G54";ModeState[14]="G64";ModeState[15]="G69";
+		ModeState[16]="G15";ModeState[17]="G40.1";ModeState[18]="G25";ModeState[19]="G160";
+		ModeState[20]="G13.1";ModeState[21]="G50.1";ModeState[22]="G54.2";ModeState[23]="G80.5";
+		//内容--新模态代码的初始化，初始化为当前模态代码，姓名--刘旋，时间2013-4-23
+		for(int i=0;i<24;i++)
+			temp_ModeState[i]=ModeState[i];
+		//内容--新模态代码中，设定几个与当前模态代码不同，用于验证程序的正确性，姓名--刘旋，时间2013-4-23
+		temp_ModeState[0]="G00";temp_ModeState[8]="G30";temp_ModeState[16]="G40";temp_ModeState[10]="G60";
 	}
 	
 	public void Program () 
@@ -391,10 +415,14 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(195f/1000f*Main.width,185f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,210f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,235f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
-		    GUI.Label(new Rect(340f/1000f*Main.width,165f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00   G94   G80", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,189f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G17   G21   G98", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,213f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90   G40   G50", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,237f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G22   G49   G67", Main.sty_Code);			
+			BlueCursorState();//内容--蓝色光标显示，模态改变的位置上显示蓝色光标，姓名--刘旋，时间2013-4-23
+			//内容--“检测”界面下，模态代码的显示，12个模态代码显示为4行3列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
+			for(int i=0;i<12;i++)
+		    {
+			    ModeCursorH=(340f+(i/4)*60f)/1000f*Main.width;
+				ModeCursorV=(165f+(i%4)*24f)/1000f*Main.height;
+				GUI.Label(new Rect(ModeCursorH,ModeCursorV,500f/1000f*Main.width,300f/1000f*Main.height),ModeState[i], Main.sty_ModeCode);   
+		    }			
 		    GUI.Label(new Rect(340f/1000f*Main.width,262f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"H", Main.sty_MostWords);
 		    GUI.Label(new Rect(420f/1000f*Main.width,262f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"M", Main.sty_MostWords);
 		    GUI.Label(new Rect(40f/1000f*Main.width,280f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"T", Main.sty_MostWords);
@@ -446,10 +474,14 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(195f/1000f*Main.width,185f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,210f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,235f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
-		    GUI.Label(new Rect(340f/1000f*Main.width,165f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00   G94   G80", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,189f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G17   G21   G98", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,213f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90   G40   G50", Main.sty_Code);
-		    GUI.Label(new Rect(340f/1000f*Main.width,237f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G22   G49   G67", Main.sty_Code);			
+			BlueCursorState();//内容--蓝色光标的显示，在模态改变的位置上显示蓝色光标，姓名--刘旋，时间--2013-4-23
+			//内容--“检测”界面下，模态代码的显示，12个模态代码显示为4行3列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
+			for(int i=0;i<12;i++)
+		    {
+			    ModeCursorH=(340f+(i/4)*60f)/1000f*Main.width;
+				ModeCursorV=(165f+(i%4)*24f)/1000f*Main.height;
+				GUI.Label(new Rect(ModeCursorH,ModeCursorV,500f/1000f*Main.width,300f/1000f*Main.height),ModeState[i], Main.sty_ModeCode);   
+		    }				
 		    GUI.Label(new Rect(340f/1000f*Main.width,262f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"H", Main.sty_MostWords);
 		    GUI.Label(new Rect(420f/1000f*Main.width,262f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"M", Main.sty_MostWords);
 		    GUI.Label(new Rect(40f/1000f*Main.width,280f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"T", Main.sty_MostWords);
@@ -643,32 +675,28 @@ public class ProgramModule : MonoBehaviour {
 			GUI.Label(new Rect(130f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_Title);
 			GUI.Label(new Rect(386f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"模态", Main.sty_Title);
 			
-			GUI.Label(new Rect(42f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00", Main.sty_Code);
-		    GUI.Label(new Rect(42f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90", Main.sty_Code);
+			GUI.Label(new Rect(42f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00", Main.sty_ModeCode);
+		    GUI.Label(new Rect(42f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90", Main.sty_ModeCode);
 			GUI.Label(new Rect(108f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"X", Main.sty_SmallXYZ);
 		    GUI.Label(new Rect(128f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.x), Main.sty_SmallNum);
 		    GUI.Label(new Rect(108f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Y", Main.sty_SmallXYZ);
 		    GUI.Label(new Rect(128f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.y), Main.sty_SmallNum);
 		    GUI.Label(new Rect(108f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Z", Main.sty_SmallXYZ);
 		    GUI.Label(new Rect(128f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.z), Main.sty_SmallNum);
-			
-			GUI.Label(new Rect(292f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00   G97", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G17   G54", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90   G64", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,163f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G22   G69", Main.sty_Code);	
-			GUI.Label(new Rect(292f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G94   G15", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,213f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G21   G40.1", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G40   G25", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G98   G50.1", Main.sty_Code);	
-			GUI.Label(new Rect(292f/1000f*Main.width,288f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G50   G54.2", Main.sty_Code);
-		    GUI.Label(new Rect(292f/1000f*Main.width,313f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G67   G80.5", Main.sty_Code);
-			
-			GUI.Label(new Rect(446f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "F", Main.sty_Mode);
-		    GUI.Label(new Rect(446f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "M", Main.sty_Mode);
-			GUI.Label(new Rect(446f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "H", Main.sty_Mode);
-			GUI.Label(new Rect(446f/1000f*Main.width,238f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "T", Main.sty_Mode);
-		    GUI.Label(new Rect(446f/1000f*Main.width,263f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "S", Main.sty_Mode);
-			GUI.Label(new Rect(496f/1000f*Main.width,188f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "D", Main.sty_Mode);
+		    BlueCursorState();//内容--蓝色光标的显示，在模态发生改变的位置上显示蓝色光标，姓名--刘旋，时间--2013-4-23
+		    //内容--“当前段”界面下，模态代码的显示，24个模态代码显示为12行2列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
+		    for(int i=0;i<24;i++)
+		    {
+				ModeCursorH=(292f+i/12*70f)/1000f*Main.width;
+				ModeCursorV=(85f+i%12*21f)/1000f*Main.height;
+				GUI.Label(new Rect(ModeCursorH,ModeCursorV,500f/1000f*Main.width,300f/1000f*Main.height),ModeState[i], Main.sty_ModeCode);
+		    }
+			GUI.Label(new Rect(446f/1000f*Main.width,85f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "F", Main.sty_Mode);
+		    GUI.Label(new Rect(446f/1000f*Main.width,106f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "M", Main.sty_Mode);
+			GUI.Label(new Rect(446f/1000f*Main.width,169f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "H", Main.sty_Mode);
+			GUI.Label(new Rect(446f/1000f*Main.width,211f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "T", Main.sty_Mode);
+		    GUI.Label(new Rect(446f/1000f*Main.width,236f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "S", Main.sty_Mode);
+			GUI.Label(new Rect(496f/1000f*Main.width,169f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "D", Main.sty_Mode);
 			
 			Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_u;
 		    Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;	
@@ -707,6 +735,51 @@ public class ProgramModule : MonoBehaviour {
 			GUI.Label(new Rect(347f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
 	}
+	//内容--定义函数，设定模态的状态，当前模态代码与新的模态代码进行比较，如果不同，相应的代码编号存放在lightup-list里，并将新的模态代码赋给当前模态代码
+	//利用lightup-list将light-flag里相应的模态状态为设为真
+	//姓名--刘旋，时间2013-4-23
+	public void SetBlueCursorState()
+	{
+		for(int i=0;i<24;i++)
+		{
+			if(ModeState[i]!=temp_ModeState[i])//内容--新模态代码与当前模态代码进行比较，姓名--刘旋，时间2013-4-23
+			{
+				lightup_list.Add(i);
+			    ModeState[i]=temp_ModeState[i];
+			}
+			light_flag[i]=false;//内容--light-flag设定前，初始化为假，姓名--刘旋，时间2013-4-23
+		}
+		for(int i=0;i<lightup_list.Count;i++)
+			light_flag[lightup_list[i]]=true;
+		lightup_list.Clear();//内容--lightup-list清空，姓名--刘旋，时间2013-4-23
+	}
+	//内容--定义函数，显示蓝色光标，1-表示当前段，2-表示检测，姓名--刘旋，时间--2013-4-23
+	public void BlueCursorState()
+	{
+		switch (para_det)
+		{
+		case 1:
+		    for(int i=0;i<24;i++)
+		    {
+			    ModeCursorH=(292f+i/12*70f)/1000f*Main.width;
+			    ModeCursorV=(85f+i%12*21f)/1000f*Main.height;
+				if(light_flag[i])
+				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,60f/1000f*Main.width,21f/1000f*Main.height),"", Main.sty_EDITLabel);
+		    }
+			break;
+		case 2:
+			for(int i=0;i<12;i++)
+		    {
+			    ModeCursorH=(340f+i/4*60f)/1000f*Main.width;
+				ModeCursorV=(165f+i%4*24f)/1000f*Main.height;
+				if(light_flag[i])
+				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,60f/1000f*Main.width,24f/1000f*Main.height),"", Main.sty_EDITLabel);   
+		    }
+			break;
+		}
+	}
+
+		
 	// Update is called once per frame
 	void Update () {
 	
