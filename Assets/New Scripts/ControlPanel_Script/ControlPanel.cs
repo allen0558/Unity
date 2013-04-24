@@ -21,6 +21,8 @@ public class ControlPanel : MonoBehaviour {
 	SpindleControl SpindleControl_script;
 	CooSystem CooSystem_script;
 	CompileNC CompileNC_script;
+	SystemModule System_Script;//添加脚本SystemModule和MessageModule，姓名--刘旋，时间--2013-4-24
+	MessageModule Message_Script;
 	
 	public float width = 670;
 	public float height = 650;
@@ -214,6 +216,18 @@ public class ControlPanel : MonoBehaviour {
 	public GUIStyle sty_OffSet_Coo;
 	public GUIStyle sty_SettingsBG;
 	
+	//内容--定义Message界面字体
+	public GUIStyle sty_MessAlarm;
+	public GUIStyle sty_MessRecordID;
+	public GUIStyle sty_MessRecordTime;
+	public GUIStyle sty_MessRecordInfo;
+	//内容--定义System界面字体
+	public GUIStyle sty_SysID;
+	public GUIStyle sty_SysInfo;
+	
+	//内容--定义布尔变量，控制System、Message的显示，姓名--刘旋，时间--2013-4-24
+	public bool SystemMenu=false;
+	public bool MessageMenu=false;
 	public bool PosMenu = true;
 	public bool RelativeCoo = false;
 	public bool AbsoluteCoo = true;
@@ -252,6 +266,10 @@ public class ControlPanel : MonoBehaviour {
 	//内容--定义变量ProgAUTOFlip，用于控制AUTO模式下屏幕的显示
 	//姓名--刘旋，时间--2013-3-25
 	public int ProgAUTOFlip=0;
+	//内容--定义变量MessageFlip，用于Message模式的显示，姓名--刘旋，时间--2013-4-24
+	public int MessageFlip=0;
+	//内容--定义变量SystemFlip，用于System模式的显示，姓名--刘旋，时间--2013-4-24
+	public int SystemFlip=0;
 	public int ProgSharedView = 0;
 	public int ProgUsedNum = 0;
 	public int ProgUnusedNum = 400;
@@ -368,6 +386,10 @@ public class ControlPanel : MonoBehaviour {
 	{
 		gameObject.AddComponent("PositionModule");
 		Position_Script = gameObject.GetComponent<PositionModule>();
+		gameObject.AddComponent("SystemModule");//添加脚本，姓名--刘旋，时间--2013-4-24
+		System_Script=gameObject.GetComponent<SystemModule>();
+		gameObject.AddComponent("MessageModule");
+		Message_Script=gameObject.GetComponent<MessageModule>();
 		gameObject.AddComponent("SoftkeyModule");
 		Softkey_Script = gameObject.GetComponent<SoftkeyModule>();
 		gameObject.AddComponent("ProgramModule");
@@ -769,6 +791,27 @@ public class ControlPanel : MonoBehaviour {
 		
 		sty_TopLabel.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/toplabel");
 		
+		sty_MessAlarm.font=(Font)Resources.Load("font/simfang");
+		sty_MessAlarm.normal.textColor=Color.red;
+		sty_MessAlarm.fontSize=13;
+		
+		sty_MessRecordID.font=(Font)Resources.Load("font/simfang");
+		sty_MessRecordID.normal.textColor=Color.blue;
+		sty_MessRecordID.fontSize=13;
+		
+		sty_MessRecordTime.font=(Font)Resources.Load("font/simfang");
+		sty_MessRecordTime.fontSize=14;
+		
+		sty_MessRecordInfo.font=(Font)Resources.Load("font/simfang");
+		sty_MessRecordInfo.fontSize=15;
+		
+		sty_SysID.font=(Font)Resources.Load("font/monoMMM_5");
+		sty_SysID.fontSize=13;
+		
+		sty_SysInfo.font=(Font)Resources.Load("font/simfang");
+		sty_SysInfo.fontSize=15;
+		sty_SysInfo.normal.textColor=Color.blue;
+		
 		t2d_BottomButton_u = (Texture2D)Resources.Load("Texture_Panel/Button/bottombutton_u");
 		t2d_BottomButton_d = (Texture2D)Resources.Load("Texture_Panel/Button/bottombutton_d");
 		
@@ -883,7 +926,20 @@ public class ControlPanel : MonoBehaviour {
 				Offset_Script.Offset();
 			}
 			
+			//System界面，姓名--刘旋，时间--2013-4-24
+			if(SystemMenu)
+			{
+				//System模块显示
+				System_Script.System();
+			}
 			//屏幕 基本固定区域
+			
+			//Message界面，姓名--刘旋，时间--2013-4-24
+			if(MessageMenu)
+			{
+				//Message模块显示
+				Message_Script.Message();
+			}
 			ScreenBottom();
 			
 			//打印编辑区域

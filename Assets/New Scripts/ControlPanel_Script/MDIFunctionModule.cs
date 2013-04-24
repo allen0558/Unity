@@ -57,7 +57,7 @@ public class MDIFunctionModule : MonoBehaviour {
 		{
 			if(Main.ScreenPower)
 			{
-				
+				SystemButton();
 			}
 		}
 		
@@ -65,7 +65,7 @@ public class MDIFunctionModule : MonoBehaviour {
 		{
 			if(Main.ScreenPower)
 			{
-				
+				MessageButton();
 			}
 		}
 		
@@ -139,6 +139,8 @@ public class MDIFunctionModule : MonoBehaviour {
 			Main.PosMenu = true;
 			Main.ProgMenu = false;
 			Main.SettingMenu = false;
+			Main.SystemMenu=false;//内容--位置显示时，System和Message为假，姓名--刘旋，时间--2013-4-24
+			Main.MessageMenu=false;
 		}
 	}
 	
@@ -162,6 +164,8 @@ public class MDIFunctionModule : MonoBehaviour {
 		Main.PosMenu = false;
 		Main.SettingMenu = false;
 		Main.ProgMenu = true;
+		Main.SystemMenu=false;//内容--程序显示时，System和Message为假，姓名--刘旋，时间--2013-4-24
+		Main.MessageMenu=false;
 	}
 	
 	void OffSettingsButton () {
@@ -183,7 +187,72 @@ public class MDIFunctionModule : MonoBehaviour {
 		Main.PosMenu = false;
 		Main.SettingMenu = true;
 		Main.ProgMenu = false;
+		Main.SystemMenu=false;//内容--设置显示时，System和Message为假，姓名--刘旋，时间--2013-4-24
+		Main.MessageMenu=false;
+		
 		//CooSystem_script.ReadCooFile();
+	}
+	void SystemButton()
+	{
+		if(Main.PosMenu)
+		{
+			Main.InputText = Main.OffSetTemp;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		if(Main.ProgMenu)
+		{
+			Main.TempInputText = Main.InputText;
+			Main.InputText = Main.OffSetTemp;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		if(Main.SettingMenu)
+		{
+			Main.OffSetTemp = Main.InputText;
+			Main.InputText = Main.TempInputText;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		Main.PosMenu = false;
+		Main.SettingMenu = false;
+		Main.ProgMenu = false;
+		Main.SystemMenu=true;//内容--System显示时，System为真，姓名--刘旋，时间--2013-4-24
+		Main.MessageMenu=false;
+	}
+	void MessageButton()
+	{
+		if(Main.PosMenu)
+		{
+			Main.InputText = Main.OffSetTemp;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		if(Main.ProgMenu)
+		{
+			Main.TempInputText = Main.InputText;
+			Main.InputText = Main.OffSetTemp;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		if(Main.SettingMenu)
+		{
+			Main.OffSetTemp = Main.InputText;
+			Main.InputText = Main.TempInputText;
+			Main.CursorText.text = Main.InputText;
+			Main.InputTextSize = Main.sty_InputTextField.CalcSize(new GUIContent(Main.CursorText.text));
+			Main.ProgEDITCusorPos = 57f + Main.InputTextSize.x;
+		}
+		Main.PosMenu = false;
+		Main.SettingMenu = false;
+		Main.ProgMenu = false;
+		Main.SystemMenu=false;
+		Main.MessageMenu=true;//内容--Message显示时，Message为真，姓名--刘旋，时间--2013-4-24
 	}
 	
 	// Update is called once per frame

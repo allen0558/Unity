@@ -8,14 +8,10 @@ public class SoftkeyModule : MonoBehaviour {
 	ControlPanel Main;
 	CooSystem CooSystem_script;
 	MDIEditModule MDIEdit_Script;
-	ProgramModule Program_Script;
-	// Use this for initialization
 	void Start () {
 		Main = gameObject.GetComponent<ControlPanel>();
 		CooSystem_script = gameObject.GetComponent<CooSystem>();
 		MDIEdit_Script = gameObject.GetComponent<MDIEditModule>();
-		gameObject.AddComponent("ProgramModule");
-		Program_Script = gameObject.GetComponent<ProgramModule>();
 	}
 	
 	public void Softkey () 
@@ -125,42 +121,6 @@ public class SoftkeyModule : MonoBehaviour {
 				if(Main.ProgAUTOFlip==5)//“下一段”页返回“程序”页
 					Main.ProgAUTOFlip=0;
 			}//增加内容到此
-			if(Main.ProgMDI)//内容--MDI模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
-			{
-				if(Main.ProgMDIFlip==1)
-					Main.ProgMDIFlip=0;
-				else if(Main.ProgMDIFlip==2)
-					Main.ProgMDIFlip=1;
-				else if(Main.ProgMDIFlip==3)
-					Main.ProgMDIFlip=1;
-			}
-			if(Main.ProgDNC)//内容--DNC模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
-			{
-				if(Main.ProgDNCFlip==1)
-					Main.ProgDNCFlip=0;
-				else if(Main.ProgDNCFlip==2)
-					Main.ProgDNCFlip=1;
-				else if(Main.ProgDNCFlip==3)
-					Main.ProgDNCFlip=1;
-			}
-			if(Main.ProgHAN)//内容--HAN模式下，程序界面，向前翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
-			{
-				if(Main.ProgHANFlip==1)
-					Main.ProgHANFlip=0;
-				else if(Main.ProgHANFlip==2)
-					Main.ProgHANFlip=1;
-				else if(Main.ProgHANFlip==3)
-					Main.ProgHANFlip=1;
-			}
-			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
-		    {
-				if(Main.ProgSharedFlip==1)
-					Main.ProgSharedFlip=0;
-				else if(Main.ProgSharedFlip==2)
-					Main.ProgSharedFlip=1;
-				else if(Main.ProgSharedFlip==3)
-					Main.ProgSharedFlip=1;
-			}
 		}
 		//设置界面时按下
 		if(Main.SettingMenu)
@@ -236,46 +196,23 @@ public class SoftkeyModule : MonoBehaviour {
 				if(Main.ProgAUTOFlip==4)//“相对”页，按下“绝对”按钮，转到“绝对”页
 				{
 					Main.ProgAUTOFlip=2;
-					Program_Script.para_det=2;//内容--检测界面，psra-det设为2，姓名--刘旋，时间--2013-4-23
-					Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-					//Program_Script.BlueCursorState();
 				}
 			}
 			if(Main.ProgMDI)//内容--MDI模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgMDIFlip==0)
-					Main.ProgMDIFlip=1;
-				else if(Main.ProgMDIFlip==2)
-					Main.ProgMDIFlip=1;
-				else if(Main.ProgMDIFlip==3)
-					Main.ProgMDIFlip=1;
+				Main.ProgMDIFlip=1;
 			}
 			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgDNCFlip==0)
-					Main.ProgDNCFlip=1;
-				else if(Main.ProgDNCFlip==2)
-					Main.ProgDNCFlip=1;
-				else if(Main.ProgDNCFlip==3)
-					Main.ProgDNCFlip=1;
+				Main.ProgDNCFlip=0;
 			}
 			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第一个按钮的功能，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgHANFlip==0)
-					Main.ProgHANFlip=1;
-				else if(Main.ProgHANFlip==2)
-					Main.ProgHANFlip=1;
-				else if(Main.ProgHANFlip==3)
-					Main.ProgHANFlip=1;
+				Main.ProgHANFlip=0;
 			}
 			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgSharedFlip==0)
-					Main.ProgSharedFlip=1;
-				else if(Main.ProgSharedFlip==2)
-					Main.ProgSharedFlip=1;
-				else if(Main.ProgSharedFlip==3)
-					Main.ProgSharedFlip=1;
+				Main.ProgSharedFlip=0;
 			}
 		}
 		//设置界面时按下
@@ -297,6 +234,10 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.ProgEDITCusorPos = 57f;
 				}
 			}	
+		}
+		if(Main.MessageMenu)
+		{
+			Main.MessageFlip=0;
 		}
 	}
 	
@@ -961,33 +902,29 @@ public class SoftkeyModule : MonoBehaviour {
 			if(Main.ProgAUTOFlip==0)//“程序”页，按下“检测”按钮，转到“绝对”页
 			{
 				Main.ProgAUTOFlip=2;
-				Program_Script.para_det=2;//内容--检测界面，psra-det设为2，姓名--刘旋，时间--2013-4-23
-				Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				//Program_Script.BlueCursorState();
 			}
 			//内容--AUTO模式下，程序界面，第二个按钮功能的修改，姓名--刘旋，时间--2013-4-9
 			else if(Main.ProgAUTOFlip==2)//“绝对”页，按下“相对”按钮，转到“相对”页
 			{
 				Main.ProgAUTOFlip=4;
-				Program_Script.para_det=2;//内容--检测界面，psra-det设为2，姓名--刘旋，时间--2013-4-23
-				Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				//Program_Script.BlueCursorState();
 			}
 			else if(Main.ProgAUTOFlip==3)//内容--“当前段”页，按下“检索”按钮，转到“绝对”页，姓名--刘旋，时间--2013-4-11
 			{
 				Main.ProgAUTOFlip=2;
-				Program_Script.para_det=2;//内容--检测界面，psra-det设为2，姓名--刘旋，时间--2013-4-23
-				Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				//Program_Script.BlueCursorState();
 			}
 			else if(Main.ProgAUTOFlip==5)//内容--“下一段”页，按下“检索”按钮，转到“绝对”页，姓名--刘旋，时间--2013-4-11
 			{
 				Main.ProgAUTOFlip=2;
-				Program_Script.para_det=2;//内容--检测界面，psra-det设为2，姓名--刘旋，时间--2013-4-23
-				Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				//Program_Script.BlueCursorState();
 			}
 		}//增加内容到此
+		if(Main.ProgMDI)
+		{
+			Main.ProgMDIFlip=0;
+		}
+		if(Main.MessageMenu)
+		{
+			Main.MessageFlip=1;
+		}
 	}
 	
 	//软键 Button3
@@ -1033,12 +970,6 @@ public class SoftkeyModule : MonoBehaviour {
 				//内容--AOTO模式下，程序界面，第三个按钮功能的修改，姓名--刘旋，时间--2013-4-9
 				if(Main.ProgAUTOFlip==5)//“下一度”页，按下“当前段”按钮，转到“当前段”页
 					Main.ProgAUTOFlip=3;
-				if(Main.ProgAUTOFlip==3)
-				{
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
 			}//增加能容到此
 			
 			if(Main.ProgMDI)//内容--MDI模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
@@ -1049,57 +980,18 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.ProgMDIFlip=2;
 				else if(Main.ProgMDIFlip==3)
 					Main.ProgMDIFlip=2;
-				if(Main.ProgMDIFlip==2)
-				{
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
 			}
 			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-			     if(Main.ProgDNCFlip==0)
-					Main.ProgDNCFlip=2;
-				else if(Main.ProgDNCFlip==1)
-					Main.ProgDNCFlip=2;
-				else if(Main.ProgDNCFlip==3)
-					Main.ProgDNCFlip=2;
-				if(Main.ProgDNCFlip==2)
-				{
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
+			    Main.ProgDNCFlip=1;
 			}
 			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第三个按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-			     if(Main.ProgHANFlip==0)
-					Main.ProgHANFlip=2;
-				else if(Main.ProgHANFlip==1)
-					Main.ProgHANFlip=2;
-				else if(Main.ProgHANFlip==3)
-					Main.ProgHANFlip=2;
-				if(Main.ProgHANFlip==2)
-				{
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
+			    Main.ProgHANFlip=1;
 			}
 			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-			     if(Main.ProgSharedFlip==0)
-					Main.ProgSharedFlip=2;
-				else if(Main.ProgSharedFlip==1)
-					Main.ProgSharedFlip=2;
-				else if(Main.ProgSharedFlip==3)
-					Main.ProgSharedFlip=2;
-				if(Main.ProgSharedFlip==2)
-				{
-					Program_Script.para_det=1;///内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23 
-				    //Program_Script.BlueCursorState();
-				}
+			    Main.ProgSharedFlip=1;
 			}	
 		}
 		//设置界面时按下
@@ -1115,6 +1007,10 @@ public class SoftkeyModule : MonoBehaviour {
 			{
 				
 			}	
+		}
+		if(Main.MessageMenu)
+		{
+			Main.MessageFlip=2;
 		}
 	}
 	
@@ -1165,30 +1061,15 @@ public class SoftkeyModule : MonoBehaviour {
 			}
 			if(Main.ProgDNC)//内容--DNC模式下，程序界面，第四个按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgDNCFlip==0)
-					Main.ProgDNCFlip=3;
-				else if(Main.ProgDNCFlip==1)
-					Main.ProgDNCFlip=3;
-				else if(Main.ProgDNCFlip==2)
-					Main.ProgDNCFlip=3;
+				Main.ProgDNCFlip=2;
 			}
 			if(Main.ProgHAN)//内容--HAN模式下，程序界面，第四个按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgHANFlip==0)
-					Main.ProgHANFlip=3;
-				else if(Main.ProgHANFlip==1)
-					Main.ProgHANFlip=3;
-				else if(Main.ProgHANFlip==2)
-					Main.ProgHANFlip=3;
+				Main.ProgHANFlip=2;
 			}
 			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgSharedFlip==0)
-					Main.ProgSharedFlip=3;
-				else if(Main.ProgSharedFlip==1)
-					Main.ProgSharedFlip=3;
-				else if(Main.ProgSharedFlip==2)
-					Main.ProgSharedFlip=3;
+				Main.ProgSharedFlip=2;
 			}
 		}
 		
@@ -1334,12 +1215,7 @@ public class SoftkeyModule : MonoBehaviour {
 				if(Main.ProgMDIFlip==0)
 					Main.ProgMDIFlip=1;
 				else if(Main.ProgMDIFlip==1)
-				{
 					Main.ProgMDIFlip=2;
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
 				else if(Main.ProgMDIFlip==2)
 					Main.ProgMDIFlip=3;
 			}
@@ -1348,42 +1224,21 @@ public class SoftkeyModule : MonoBehaviour {
 				if(Main.ProgDNCFlip==0)
 					Main.ProgDNCFlip=1;
 				else if(Main.ProgDNCFlip==1)
-				{
 					Main.ProgDNCFlip=2;
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23  
-				    //Program_Script.BlueCursorState();
-				}
-				else if(Main.ProgDNCFlip==2)
-					Main.ProgDNCFlip=3;
 			}
 			if(Main.ProgHAN)//内容--HAN模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
-				if(Main.ProgHANFlip==0)
+			    if(Main.ProgHANFlip==0)
 					Main.ProgHANFlip=1;
 				else if(Main.ProgHANFlip==1)
-				{
 					Main.ProgHANFlip=2;
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23
-				    //Program_Script.BlueCursorState();
-				}
-				else if(Main.ProgHANFlip==2)
-					Main.ProgHANFlip=3;
 			}
 			if(Main.ProgJOG || Main.ProgREF)//内容--JOG和REF模式下，程序界面，向后翻页按钮功能的实现，姓名--刘旋，时间--2013-4-22
 			{
 				if(Main.ProgSharedFlip==0)
 					Main.ProgSharedFlip=1;
 				else if(Main.ProgSharedFlip==1)
-				{
 					Main.ProgSharedFlip=2;
-					Program_Script.para_det=1;//内容--当前页界面，psra-det设为1，姓名--刘旋，时间--2013-4-23
-				    Program_Script.SetBlueCursorState();//内容--刷新模态状态为，姓名--刘旋，时间--2013-4-23  
-				    //Program_Script.BlueCursorState();
-				}
-				else if(Main.ProgSharedFlip==2)
-					Main.ProgSharedFlip=3;
 			}
 		}
 		
@@ -1406,6 +1261,15 @@ public class SoftkeyModule : MonoBehaviour {
 					Main.OffSetOne = false;
 				}
 			}
+		}
+		if(Main.MessageMenu)
+		{
+			if(Main.MessageFlip==0)
+				Main.MessageFlip=1;
+			else if(Main.MessageFlip==1)
+				Main.MessageFlip=1;
+			else if(Main.MessageFlip==2)
+				Main.MessageFlip=2;
 		}
 	}
 	

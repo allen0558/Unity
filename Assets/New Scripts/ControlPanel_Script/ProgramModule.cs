@@ -30,8 +30,15 @@ public class ProgramModule : MonoBehaviour {
 		//内容--新模态代码的初始化，初始化为当前模态代码，姓名--刘旋，时间2013-4-23
 		for(int i=0;i<24;i++)
 			temp_ModeState[i]=ModeState[i];
-		//内容--新模态代码中，设定几个与当前模态代码不同，用于验证程序的正确性，姓名--刘旋，时间2013-4-23
-		temp_ModeState[0]="G00";temp_ModeState[8]="G30";temp_ModeState[16]="G40";temp_ModeState[10]="G60";
+	}
+	void OnGUI()
+	{
+		if(GUI.Button(new Rect(200f,100f,100f,60f),"ModeState"))
+		{
+			//内容--新模态代码中，设定几个与当前模态代码不同，用于验证程序的正确性，姓名--刘旋，时间2013-4-23
+		    temp_ModeState[0]="G80";temp_ModeState[8]="G30";temp_ModeState[16]="G90";temp_ModeState[10]="G70";temp_ModeState[18]="G60";
+			SetBlueCursorState();
+		}
 	}
 	
 	public void Program () 
@@ -415,6 +422,7 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(195f/1000f*Main.width,185f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,210f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,235f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
+			para_det=2;
 			BlueCursorState();//内容--蓝色光标显示，模态改变的位置上显示蓝色光标，姓名--刘旋，时间2013-4-23
 			//内容--“检测”界面下，模态代码的显示，12个模态代码显示为4行3列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
 			for(int i=0;i<12;i++)
@@ -474,6 +482,7 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(195f/1000f*Main.width,185f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,210f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
 		    GUI.Label(new Rect(195f/1000f*Main.width,235f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"     0.000", Main.sty_SmallNum);
+			para_det=2;
 			BlueCursorState();//内容--蓝色光标的显示，在模态改变的位置上显示蓝色光标，姓名--刘旋，时间--2013-4-23
 			//内容--“检测”界面下，模态代码的显示，12个模态代码显示为4行3列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
 			for(int i=0;i<12;i++)
@@ -515,27 +524,13 @@ public class ProgramModule : MonoBehaviour {
 	{
 		if(Main.ProgSharedFlip==0)
 		{
-			ModeEditInterface();
-			if(Main.ProgJOG)
-			{
-			    GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(JOG)", Main.sty_BottomAST);
-				GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"JOG", Main.sty_BottomChooseMenu);
-			}
-			else
-			{
-				GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(REF)", Main.sty_BottomAST);
-				GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"REF", Main.sty_BottomChooseMenu);
-			}
+			ProgramInterface();
 		}
 		if(Main.ProgSharedFlip==1)
 		{
-			ProgramInterface();
-		}
-		if(Main.ProgSharedFlip==2)
-		{
 			CurrentParagraph();
 		}
-		if(Main.ProgSharedFlip==3)
+		if(Main.ProgSharedFlip==2)
 		{
 			NextParagraph();
 		}
@@ -551,33 +546,30 @@ public class ProgramModule : MonoBehaviour {
 		if(Main.ProgMDIFlip==1)
 		{
 			ProgramInterface();
+			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"MDI", Main.sty_BottomChooseMenu);
 		}
 		if(Main.ProgMDIFlip==2)
 		{
 			CurrentParagraph();
+			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"MDI", Main.sty_BottomChooseMenu);
 		}
 		if(Main.ProgMDIFlip==3)
 		{
 			NextParagraph();
+			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"MDI", Main.sty_BottomChooseMenu);
 		}
 	}
 	void ProgDNCWindow()
 	{
 		if(Main.ProgDNCFlip==0)
 		{
-			ModeEditInterface();
-			GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(DNC)", Main.sty_BottomAST);
-			GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"DNC", Main.sty_BottomChooseMenu);
+			ProgramInterface();
 		}
 		if(Main.ProgDNCFlip==1)
 		{
-			ProgramInterface();
-		}
-		if(Main.ProgDNCFlip==2)
-		{
 			CurrentParagraph();
 		}
-		if(Main.ProgDNCFlip==3)
+		if(Main.ProgDNCFlip==2)
 		{
 			NextParagraph();
 		}
@@ -586,19 +578,13 @@ public class ProgramModule : MonoBehaviour {
 	{
 		if(Main.ProgHANFlip==0)
 		{
-			ModeEditInterface();
-			GUI.Label(new Rect(40f/1000f*Main.width,30f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"程序(HAN)", Main.sty_BottomAST);
-			GUI.Label(new Rect(175f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"HAN", Main.sty_BottomChooseMenu);
+			ProgramInterface();
 		}
 		if(Main.ProgHANFlip==1)
 		{
-			ProgramInterface();
-		}
-		if(Main.ProgHANFlip==2)
-		{
 			CurrentParagraph();
 		}
-		if(Main.ProgHANFlip==3)
+		if(Main.ProgHANFlip==2)
 		{
 			NextParagraph();
 		}
@@ -657,7 +643,7 @@ public class ProgramModule : MonoBehaviour {
 		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
 		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
 		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
+			//GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
 			GUI.Label(new Rect(83f/1000f*Main.width,421f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(257f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_BottomChooseMenu);
@@ -683,6 +669,7 @@ public class ProgramModule : MonoBehaviour {
 		    GUI.Label(new Rect(128f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.y), Main.sty_SmallNum);
 		    GUI.Label(new Rect(108f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Z", Main.sty_SmallXYZ);
 		    GUI.Label(new Rect(128f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.z), Main.sty_SmallNum);
+		    para_det=1;
 		    BlueCursorState();//内容--蓝色光标的显示，在模态发生改变的位置上显示蓝色光标，姓名--刘旋，时间--2013-4-23
 		    //内容--“当前段”界面下，模态代码的显示，24个模态代码显示为12行2列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
 		    for(int i=0;i<24;i++)
@@ -703,7 +690,7 @@ public class ProgramModule : MonoBehaviour {
 		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_d;
 		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_u;
 		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
+			//GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
 		    GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
 			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
@@ -727,7 +714,7 @@ public class ProgramModule : MonoBehaviour {
 		    Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
 		    Main.sty_BottomButton_4.normal.background = Main.t2d_BottomButton_d;
 		    Main.sty_BottomButton_5.normal.background = Main.t2d_BottomButton_u;
-			GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
+			//GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"<", Main.sty_MostWords);
 		    GUI.Label(new Rect(44f/1000f*Main.width,423f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_MostWords);
 			GUI.Label(new Rect(83f/1000f*Main.width,420f/1000f*Main.height,100f/1000f*Main.width,25f/1000f*Main.height),"程序", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"", Main.sty_BottomChooseMenu);
