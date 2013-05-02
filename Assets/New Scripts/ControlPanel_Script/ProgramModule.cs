@@ -749,18 +749,18 @@ public class ProgramModule : MonoBehaviour {
 		    for(int i=0;i<24;i++)
 		    {
 			    ModeCursorH=(292f+i/12*70f)/1000f*Main.width;
-			    ModeCursorV=(85f+i%12*21f)/1000f*Main.height;
+			    ModeCursorV=(87f+i%12*21f)/1000f*Main.height;
 				if(light_flag[i])
-				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,60f/1000f*Main.width,21f/1000f*Main.height),"", Main.sty_EDITLabel);
+				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,65f/1000f*Main.width,21f/1000f*Main.height),"", Main.sty_EDITLabel);
 		    }
 			break;
 		case 2:
 			for(int i=0;i<12;i++)
 		    {
 			    ModeCursorH=(340f+i/4*60f)/1000f*Main.width;
-				ModeCursorV=(165f+i%4*24f)/1000f*Main.height;
+				ModeCursorV=(167f+i%4*24f)/1000f*Main.height;
 				if(light_flag[i])
-				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,60f/1000f*Main.width,24f/1000f*Main.height),"", Main.sty_EDITLabel);   
+				    GUI.Label(new Rect(ModeCursorH,ModeCursorV,60f/1000f*Main.width,21f/1000f*Main.height),"", Main.sty_EDITLabel);   
 		    }
 			break;
 		}
