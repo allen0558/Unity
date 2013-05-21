@@ -15,6 +15,9 @@ public class ProgramModule : MonoBehaviour {
 	public bool[] light_flag=new bool[24];//内容--模态的状态，ModeState与temp-ModeState进行比较，模态代码有变动时，相应的模态的状态为真，姓名--刘旋，时间2013-4-23
 	public List<int> lightup_list=new List<int>();//内容--用于存放有变动的模态的编号，姓名--刘旋，时间2013-4-23
 	public int para_det;//内容--1表示当前段，0表示检测（包括绝对和相对），姓名--刘旋，时间2013-4-23
+	public List<string> G_code=new List<string>();//内容--用于存放G代码，刘旋，2013-5-21
+    public List<string> G_address=new List<string>();//用于存放G代码地址，刘旋，2013-5-21
+	public List<float> G_instructValue=new List<float>();//用于存放G代码指令值，刘旋，2013-5-21
 	// Use this for initialization
 	void Start () {
 		Main = gameObject.GetComponent<ControlPanel>();
@@ -44,6 +47,10 @@ public class ProgramModule : MonoBehaviour {
 		Main.SelectEnd = 0;
 		Main.StartRow=0;
 		Main.EndRow=9;
+		//初始化G代码、地址和指令值，刘旋，2013-5-21
+		G_code.Add("G90");G_code.Add("G30");G_code.Add("G00");G_code.Add("G54");
+		G_address.Add("X");G_address.Add("I");G_address.Add("K");G_address.Add("R");
+		G_instructValue.Add(-5538f);G_instructValue.Add(5962f);G_instructValue.Add(405f);//数值要求-9999-9999
 	}
 	
 	void OnGUI()
@@ -561,10 +568,11 @@ public class ProgramModule : MonoBehaviour {
 			GUI.Label(new Rect(175f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"检测", Main.sty_BottomChooseMenu);
 			GUI.Label(new Rect(523f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"+", Main.sty_MostWords);
 		}
-		float pos_y=0;
-		if(!Main.autoDisplayNormal)pos_y=58f;
-		else pos_y=95f;
-		AutoDisplyProgram(pos_y);
+		//内容--不知道下面四行代码具体是什么意思，如果加了之后当前段和下一段会错误显示（既显示程序代码也显示模态代码），就把这个删了，如果有问题再改，刘旋，2013-5-21
+		//float pos_y=0;
+		//if(!Main.autoDisplayNormal)pos_y=58f;
+		//else pos_y=95f;
+		//AutoDisplyProgram(pos_y);
 	}
 	
 	//显示Handle、Jog、Ref模式下的程序界面
@@ -719,14 +727,7 @@ public class ProgramModule : MonoBehaviour {
 		GUI.Label(new Rect(130f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_Title);
 		GUI.Label(new Rect(386f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"模态", Main.sty_Title);
 		
-		GUI.Label(new Rect(42f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G00", Main.sty_ModeCode);
-		GUI.Label(new Rect(42f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), "G90", Main.sty_ModeCode);
-		GUI.Label(new Rect(108f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"X", Main.sty_SmallXYZ);
-		GUI.Label(new Rect(128f/1000f*Main.width,88f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.x), Main.sty_SmallNum);
-		GUI.Label(new Rect(108f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Y", Main.sty_SmallXYZ);
-		GUI.Label(new Rect(128f/1000f*Main.width,113f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.y), Main.sty_SmallNum);
-		GUI.Label(new Rect(108f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"Z", Main.sty_SmallXYZ);
-		GUI.Label(new Rect(128f/1000f*Main.width,138f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(CooSystem_script.absolute_pos.z), Main.sty_SmallNum);
+		G_codeDisplay();
 		para_det=1;
 		BlueCursorState();//内容--蓝色光标的显示，在模态发生改变的位置上显示蓝色光标，姓名--刘旋，时间--2013-4-23
 		//内容--“当前段”界面下，模态代码的显示，24个模态代码显示为12行2列，用ModeCursorH和ModeCursorV决定具体显示的坐标，姓名--刘旋，时间2013-4-23
@@ -768,6 +769,7 @@ public class ProgramModule : MonoBehaviour {
 		GUI.Label(new Rect(130f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"当前段", Main.sty_Title);
 		GUI.Label(new Rect(386f/1000f*Main.width,58f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_Title);
 		
+		G_codeDisplay();
 		Main.sty_BottomButton_1.normal.background = Main.t2d_BottomButton_u;
 		Main.sty_BottomButton_2.normal.background = Main.t2d_BottomButton_u;	
 		Main.sty_BottomButton_3.normal.background = Main.t2d_BottomButton_u;
@@ -781,7 +783,16 @@ public class ProgramModule : MonoBehaviour {
 		GUI.Label(new Rect(347f/1000f*Main.width,421f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"下一段", Main.sty_BottomChooseMenu);
 		GUI.Label(new Rect(429f/1000f*Main.width,420f/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),"（操作）", Main.sty_BottomChooseMenu);
 	}
-	
+	//定义函数G-codeDisplay，用于当前段和下一段界面下“当前段”页面中G代码、地址和指令值的显示，刘旋，2013-5-21
+	public void G_codeDisplay()
+	{
+		for(int i=0;i<G_code.Count;i++)
+			GUI.Label(new Rect(42f/1000f*Main.width,(88f+25f*i)/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), G_code[i], Main.sty_ModeCode);
+		for(int j=0;j<G_address.Count;j++)
+			GUI.Label(new Rect(108f/1000f*Main.width,(88f+25f*j)/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height),G_address[j], Main.sty_SmallXYZ);
+		for(int m=0;m<G_instructValue.Count;m++)
+			GUI.Label(new Rect(128f/1000f*Main.width,(88f+25f*m)/1000f*Main.height,500f/1000f*Main.width,300f/1000f*Main.height), Main.CooStringGet(G_instructValue[m]), Main.sty_SmallNum);
+	}
 	//内容--定义函数，设定模态的状态，当前模态代码与新的模态代码进行比较，如果不同，相应的代码编号存放在lightup-list里，并将新的模态代码赋给当前模态代码
 	//利用lightup-list将light-flag里相应的模态状态为设为真
 	//姓名--刘旋，时间2013-4-23
