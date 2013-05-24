@@ -93,7 +93,8 @@ public class ModelInitialize : MonoBehaviour {
 		}
 		Tool_Changer.name = "Tool_Changer";
 		Tool_Changer.parent = KD;
-		Tool_Changer.localPosition = Vector3.zero;
+		Tool_Changer.localPosition = GameObject.Find("main axle_3").transform.localPosition;
+		//Tool_Changer.localPosition = Vector3.zero;
 		
 		try
 		{
@@ -148,7 +149,7 @@ public class ModelInitialize : MonoBehaviour {
 		}
 		Z_axis1.name = "Z_axis1";
 		Z_axis1.parent = KD;
-		Z_axis1.localPosition = GameObject.Find("main axle_2").transform.localPosition;
+		Z_axis1.localPosition = GameObject.Find("main axle_3").transform.localPosition;
 
 		try
 		{
