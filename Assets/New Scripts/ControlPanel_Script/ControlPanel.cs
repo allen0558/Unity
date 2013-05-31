@@ -1071,6 +1071,25 @@ public class ControlPanel : MonoBehaviour {
 		move_obj.audio.clip = (AudioClip)Resources.Load("Audio/move");
 		move_obj.audio.minDistance = 30f;
 		move_obj.AddComponent("AuxiliaryMoveModule");
+		
+		GameObject tool_obj;
+		try
+		{
+			tool_obj=GameObject.Find("GameObject");
+		}
+		catch
+		{
+			Debug.LogError("Need to add more Empty GameObject by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		tool_obj.transform.name="ToolChange";
+		tool_obj.AddComponent("AutoToolChangeModule");
+		tool_obj.AddComponent("AudioSource");
+		tool_obj.audio.loop = true;
+		tool_obj.audio.playOnAwake = false;
+		tool_obj.audio.clip = (AudioClip)Resources.Load("Audio/move");
+		tool_obj.audio.minDistance = 30f;
+		
 		GameObject spindle_obj;
 		try
 		{

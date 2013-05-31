@@ -9,6 +9,8 @@ public class ModelInitialize : MonoBehaviour {
 	public Transform Y_axis1;
 	public Transform Z_axis1;
 	public Transform Tool_Changer;
+	public Transform toolsbox;
+	public Transform toolsbox_29;
 	public Transform ProtectingCrust;
 	public Transform TheRest; //The rest part of the machine except for the 3 axis and the outer skin;
 	
@@ -232,6 +234,29 @@ public class ModelInitialize : MonoBehaviour {
 				i--;
 			}	
 		}
+		try
+		{
+			toolsbox=GameObject.Find("GameObject").transform;
+		}
+		catch
+		{
+			Debug.LogError("Need to increase one Empty GameObject:toolsbox by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		toolsbox.name="tools box";
+		toolsbox.parent=Tool_Changer;
+		
+		try
+		{
+			toolsbox_29 = GameObject.Find("GameObject").transform;
+		}
+		catch
+		{
+			Debug.LogError("Need to increase one Empty GameObject:toolsbox_29 by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		toolsbox_29.name="tools box_29";
+		toolsbox_29.parent=Tool_Changer;
 	}
 	
 	// Update is called once per frame
