@@ -51,22 +51,17 @@ public class ModelInitialize : MonoBehaviour {
 		ProtectingCrust_name.Add("XYZ protecting crust_4");
 		ProtectingCrust_name.Add("XYZ protecting crust_5");
 		ProtectingCrust_name.Add("XYZ protecting crust_6");
+		ProtectingCrust_name.Add("XYZ protecting crust_7");
+		ProtectingCrust_name.Add("XYZ protecting crust_8");
 		ProtectingCrust_name.Add("XYZ protecting crust_9");
 		ProtectingCrust_name.Add("XYZ protecting crust_10");
 		ProtectingCrust_name.Add("XYZ protecting crust_11");
-		
-		try
-		{
-			leftDoor = GameObject.Find("GameObject").transform;
-		}
-		catch
-		{
-			Debug.LogError("Need to add 9 Empty GameObject by manually: Error caused by Eric Jiang.");
-			return;
-		}
-		leftDoor.name = "LeftDoor";
-		leftDoor.parent = KD;
-		leftDoor.localPosition = Vector3.zero;
+		List<string> LeftDoor_str = new List<string>();
+		List<string> RightDoor_str = new List<string>();
+		LeftDoor_str.Add("main protecting crust_13");
+		LeftDoor_str.Add("main protecting crust_15");
+		RightDoor_str.Add("main protecting crust_14");
+		RightDoor_str.Add("main protecting crust_16");
 		
 		try
 		{
@@ -107,7 +102,14 @@ public class ModelInitialize : MonoBehaviour {
 		}
 		OuterSkin1.name = "OuterSkin1";
 		OuterSkin1.parent = KD;
-		OuterSkin1.localPosition = Vector3.zero;
+		Transform temp_tran02 = GameObject.Find("main protecting crust_1").transform;
+		OuterSkin1.localPosition = temp_tran02.localPosition;
+		leftDoor = GameObject.Find("main protecting crust_11").transform;
+		leftDoor.gameObject.AddComponent("BoxCollider");
+		leftDoor.gameObject.AddComponent("door");
+		rightDoor = GameObject.Find("main protecting crust_12").transform;
+		rightDoor.gameObject.AddComponent("BoxCollider");
+		rightDoor.gameObject.AddComponent("door");
 		
 		try
 		{
@@ -149,7 +151,7 @@ public class ModelInitialize : MonoBehaviour {
 		}
 		Z_axis1.name = "Z_axis1";
 		Z_axis1.parent = KD;
-		Z_axis1.localPosition = GameObject.Find("main axle_3").transform.localPosition;
+		Z_axis1.localPosition = GameObject.Find("main axle_2").transform.localPosition;
 
 		try
 		{
@@ -167,51 +169,65 @@ public class ModelInitialize : MonoBehaviour {
 		for(int i = 0; i < AllTransform.Count; i++)
 		{
 			//Classify the X axis parts.
-			if(AllTransform[i].name == "workbench_1" || AllTransform[i].name == "XYZ protecting crust_21" || AllTransform[i].name == "XYZ protecting crust_22" || AllTransform[i].name == "XYZ protecting crust_23" || AllTransform[i].name == "XYZ protecting crust_24" || AllTransform[i].name.StartsWith("XYZ protecting crust_30"))
+			if(AllTransform[i].name == "workbench_1" || AllTransform[i].name == "XYZ protecting crust_21" || AllTransform[i].name == "XYZ protecting crust_22" || AllTransform[i].name == "XYZ protecting crust_23" || AllTransform[i].name == "XYZ protecting crust_24" || AllTransform[i].name.StartsWith("XYZ protecting crust_30") || AllTransform[i].name.StartsWith("fixture"))
 			{
-				AllTransform[i].parent = X_axis1.transform;
+				AllTransform[i].parent = X_axis1;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the Y axis parts.
 			else if(Y_axis_name.IndexOf(AllTransform[i].name) != -1)
 			{
-				AllTransform[i].parent = Y_axis1.transform;
+				AllTransform[i].parent = Y_axis1;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the Z axis parts.
 			else if(AllTransform[i].name.StartsWith("main axle") || AllTransform[i].name.StartsWith("cooling hose"))
 			{
-				AllTransform[i].parent = Z_axis1.transform;
+				AllTransform[i].parent = Z_axis1;
+				AllTransform.RemoveAt(i);
+				i--;
+			}
+			//Classify the Left Door parts
+			else if(LeftDoor_str.IndexOf(AllTransform[i].name) != -1)
+			{
+				AllTransform[i].parent = leftDoor;
+				AllTransform.RemoveAt(i);
+				i--;
+			}
+			//Classify the Right Door parts
+			else if(RightDoor_str.IndexOf(AllTransform[i].name) != -1)
+			{
+				AllTransform[i].parent = rightDoor;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the Outer Skin parts.
-			else if(AllTransform[i].name.StartsWith("face plate") || AllTransform[i].name.StartsWith("main protecting") || AllTransform[i].name.StartsWith("power box") || AllTransform[i].name.StartsWith("scrap iron box") || AllTransform[i].name.StartsWith("cooling pump"))
+			else if(AllTransform[i].name.StartsWith("face plate") || AllTransform[i].name.StartsWith("main protecting") || AllTransform[i].name.StartsWith("power box") || AllTransform[i].name.StartsWith("scrap iron box") || AllTransform[i].name.StartsWith("cooling pump") || AllTransform[i].name.StartsWith("hose"))
 			{
-				AllTransform[i].parent = OuterSkin1.transform;
+				AllTransform[i].parent = OuterSkin1;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the Tool Changer parts.
 			else if(AllTransform[i].name.StartsWith("tools box"))
 			{
-				AllTransform[i].parent = Tool_Changer.transform;
+				AllTransform[i].parent = Tool_Changer;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the removable Protecting Crust parts.
 			else if(ProtectingCrust_name.IndexOf(AllTransform[i].name) != -1)
 			{
-				AllTransform[i].parent = ProtectingCrust.transform;
+				AllTransform[i].parent = ProtectingCrust;
 				AllTransform.RemoveAt(i);
 				i--;
 			}
 			//Classify the Rest parts.
 			else
 			{
-				AllTransform[i].parent = TheRest.transform;
+				AllTransform[i].parent = TheRest;
 				AllTransform.RemoveAt(i);
 				i--;
 			}	

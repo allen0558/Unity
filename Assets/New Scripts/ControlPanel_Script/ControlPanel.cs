@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class ControlPanel : MonoBehaviour { 
 	
+	#region Defined script variable
 	PositionModule Position_Script;
 	SoftkeyModule Softkey_Script;
 	ProgramModule Program_Script;
@@ -18,12 +19,16 @@ public class ControlPanel : MonoBehaviour {
 	MachineFunctionModule MachineFunction_Script;
 	AuxiliaryFunctionModule AuxiliaryFunction_Script;
 	MoveControl MoveControl_script;
+	AuxiliaryMoveModule AuxiliaryMoveModule_Script;
 	SpindleControl SpindleControl_script;
 	CooSystem CooSystem_script;
 	CompileNC CompileNC_script;
 	SystemModule System_Script;//添加脚本SystemModule和MessageModule，姓名--刘旋，时间--2013-4-24
 	MessageModule Message_Script;
+	NCCodeFormat NCCodeFormat_Script;//代码格式化
+	#endregion
 	
+	#region Defined variable
 	public float width = 670;
 	public float height = 650;
 	public bool RapidMoveFlag = false;
@@ -31,12 +36,12 @@ public class ControlPanel : MonoBehaviour {
 	//姓名--刘旋，时间--2013-4-8
 	public bool F0_flag=false;
 	public bool F25_flag=false;
-	public bool F50_flag=false;
+	public bool F50_flag=false;//默认50%按钮时按下状态
 	public bool F100_flag=false;//增加内容到此 2013-4-8
 	//内容--定义整形变量SlowSpeedMode，用于指示慢常速下的按键状态，SlowSpeedMode=0，表示F0按下，SlowSpeedMode=1，表示25%按下
 	//SlowSpeedMode=2，表示50%按下，SlowSpeedMode=3，表示100%按下，姓名--刘旋，时间--2013-4-8
 	public int RapidSpeedMode=2;//增加内容到此  2013-4-8
-	Rect PanelWindowRect = new Rect(0, 0, 670, 650);   
+	public Rect PanelWindowRect = new Rect(-300, 20, 670, 650);   
 	public float timeV = 0;
 	
 	public Texture2D t2d_alarm;
@@ -106,6 +111,9 @@ public class ControlPanel : MonoBehaviour {
 	public Texture2D t2d_rapid_off_u;
 	public Texture2D t2d_rapid_off_d;
 	
+	public Texture2D t2d_BottomButton_u;
+	public Texture2D t2d_BottomButton_d;
+	
 	//内容--定义变量，用于实现JOG模式下F0、25%、50%、100%四个按钮的显示
 	//姓名--刘旋，时间--2013-4-8
 	public Texture2D t2d_f0_on_u;
@@ -127,10 +135,6 @@ public class ControlPanel : MonoBehaviour {
 	public Texture2D t2d_f100_on_d;
 	public Texture2D t2d_f100_off_u;
 	public Texture2D t2d_f100_off_d;//增加内容到此 2013-4-8
-	
-	
-	public Texture2D t2d_BottomButton_u;
-	public Texture2D t2d_BottomButton_d;
 	
 	//label字体style
 	public GUIStyle sty_ProgEDITWindowO; 
@@ -175,13 +179,13 @@ public class ControlPanel : MonoBehaviour {
 	public GUIStyle sty_ButtonXN;
 	public GUIStyle sty_Button4P;
 	public GUIStyle sty_Button4N;
+	
 	//内容--定义sty_ButtonF0、sty_Button25、sty_Button50、sty_Button100，用于实现JOG模式下F0、25%、50%、100%四个按钮的显示
 	//姓名--刘旋，时间--2013-4-8
 	public GUIStyle sty_ButtonF0;
 	public GUIStyle sty_ButtonF25;
 	public GUIStyle sty_ButtonF50;
 	public GUIStyle sty_ButtonF100;//增加内容到此 2013-4-8
-	
 	
 	public GUIStyle sty_ButtonEmpty;
 	
@@ -216,6 +220,8 @@ public class ControlPanel : MonoBehaviour {
 	public GUIStyle sty_OffSet_Coo;
 	public GUIStyle sty_SettingsBG;
 	
+	public GUIStyle sty_EditListTop;
+	
 	//内容--定义Message界面字体
 	public GUIStyle sty_MessAlarm;
 	public GUIStyle sty_MessRecordID;
@@ -224,6 +230,8 @@ public class ControlPanel : MonoBehaviour {
 	//内容--定义System界面字体
 	public GUIStyle sty_SysID;
 	public GUIStyle sty_SysInfo;
+	//蓝色光标
+	public GUIStyle sty_BlueCursor;
 	
 	//内容--定义布尔变量，控制System、Message的显示，姓名--刘旋，时间--2013-4-24
 	public bool SystemMenu=false;
@@ -238,16 +246,16 @@ public class ControlPanel : MonoBehaviour {
 	public int ProgramNum = 0;
 	public int AutoProgName = -1;
 	public int LineNum = 0;
-	public int SpindleSpeed = 0;
-	public int ToolNo = 0;
-	public int PartsNum = 987;
-	public int RunningTimeH = 57;
-	public int RunningTimeM = 60;
-	public int CycleTimeH = 24;
-	public int CycleTimeM = 60;
-	public int CycleTimeS = 60;
-	public int RunningSpeed = 0;
-	public int SACT = 20;
+	public int SpindleSpeed = 0; //S主轴转速
+	public int ToolNo = 0; //T刀具号
+	public int PartsNum = 0;  //加工零件数
+	public int RunningTimeH = 57; //运行时
+	public int RunningTimeM = 60; //运行分
+	public int CycleTimeH = 24; //循环时间时
+	public int CycleTimeM = 60; //循环时间分
+	public int CycleTimeS = 60; //循环时间秒
+	public int RunningSpeed = 0; //实速度
+	public int SACT = 20; //相当于转速
 	public bool ALMBlink = false;
 	public bool CursorBlink = false;
 	public float BlinkTime = 0;
@@ -256,30 +264,75 @@ public class ControlPanel : MonoBehaviour {
 	public bool ProgEDITProg = true;
 	public bool ProgEDITList = false;
 	public int ProgEDITFlip = 0;
-	public int ProgSharedFlip = 0;
-	//内容--定义变量ProgMDIFlip，用于控制MDI模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
-	public int ProgMDIFlip=0;
-	//内容--定义变量ProgDNCFlip，用于控制DNC模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
-	public int ProgDNCFlip=0;
-	//内容--定义变量ProgHANFlip，用于控制Handle模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
-	public int ProgHANFlip=0;
 	//内容--定义变量ProgAUTOFlip，用于控制AUTO模式下屏幕的显示
 	//姓名--刘旋，时间--2013-3-25
 	public int ProgAUTOFlip=0;
-	//内容--定义变量MessageFlip，用于Message模式的显示，姓名--刘旋，时间--2013-4-24
-	public int MessageFlip=0;
-	//内容--定义变量SystemFlip，用于System模式的显示，姓名--刘旋，时间--2013-4-24
-	public int SystemFlip=0;
+	public int ProgSharedFlip = 0;
 	public int ProgSharedView = 0;
 	public int ProgUsedNum = 0;
 	public int ProgUnusedNum = 400;
 	public int ProgUsedSpace = 0;
 	//内容--内存总容量为512K，姓名--刘旋，时间--2013-3-18
 	public int ProgUnusedSpace = 512;//将419430400修改为512
-	
+	//内容--定义变量ProgMDIFlip，用于控制MDI模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgMDIFlip=0;
+	//内容--定义变量ProgDNCFlip，用于控制DNC模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgDNCFlip=0;
+	//内容--定义变量ProgHANFlip，用于控制Handle模式下，程序菜单屏幕的显示，姓名--刘旋，时间--2013-4-22
+	public int ProgHANFlip=0;
+	//内容--定义变量MessageFlip，用于Message模式的显示，姓名--刘旋，时间--2013-4-24
+	public int MessageFlip=0;
+	//内容--定义变量SystemFlip，用于System模式的显示，姓名--刘旋，时间--2013-4-24
+	public int SystemFlip=0;
 	public float ProgEDITCusor = 0;
-	public float ProgEDITCusorV = 0;
-	public float ProgEDITCusorH = 0;
+	
+	/// 记录当前光标的索引, 董帅 陈晓威， 2013-4-2
+	//EDIT模式下
+	//光标当前行
+	public int ProgEDITCusorV = 0;
+	//光标当前列
+	public int ProgEDITCusorH = 0;
+	//MDI模式下
+	public int MDIProgEDITCusorV = 0;
+	public int MDIProgEDITCusorH = 0;
+	/// 记录选中的代码的起点索引和终点索引  董帅  2013-4-2
+	public int SelectStart = 0;
+	public int SelectEnd = 0;
+	public int MDISelectStart = 0;
+	public int MDISelectEnd = 0;
+	//记录是否选择 陈晓威 
+	public bool IsSelect = false;
+	public bool needRecalc=false;
+	public bool editDisplay=true;
+	/// 记录程序分行的位置，董帅，2013-4-2
+	public int[] SeparatePos = new int[100000];
+	
+	public int[] MDISeparatePos = new int[100000];
+	
+	public int[] AUTOSeparatePos = new int[100000];
+	//记录选择的行数 
+	public int SelectRowNum = 0;
+	//public int ProgTotalRow = 0;
+	
+	//复制缓冲区 董帅 2013-4-10
+	public List<string> CodeBuffer = new List<string>();
+	//记录选择开始时前一个单词的位置 董帅 2013-4-10
+	public int SelStartCurV = 0;
+	public int SelStartCurH = 0;
+	
+	//是否选择代码首个 陈晓威
+	public bool isSelecFirst=false;
+	//用CodeForMDI来存放MDI中的代码  
+	public List<string> CodeForMDI = new List<string>();
+	
+	//auto模式下code 陈晓威
+	public List<string> CodeForAUTO = new List<string>();
+	public List<int>AutoRunItemRows=new List<int>();
+	public int AUTOStartRow=0;
+	public int AUTOEndRow=0;
+	public bool autoDisplayNormal=true;
+	public int autoSelecedProgRow=0;
+	
 	public float ProgEDITCusorPos = 0;
 	public bool ProgDNC = false;
 	public bool ProgAUTO = false;
@@ -293,18 +346,17 @@ public class ControlPanel : MonoBehaviour {
 	public bool ProgProtectWarn = false;
 	public Vector2 TextSize = new Vector2(0,0);
 	public bool SettingMenu = false;
-	public bool OffSetTool = false;
+	public bool OffSetTool = true;
 	public bool OffSetSetting = false;
-	public bool OffSetCoo = true;
+	public bool OffSetCoo = false;
 	public bool OffSetOne = true;
 	public bool OffSetTwo = false;
 	public bool OffCooFirstPage = true;
 	
-	
-	
 	public List<string> FileNameList = new List<string>();
 	public List<int> FileSizeList = new List<int>();
 	public List<string> FileDateList = new List<string>();
+	//用CodeForAll来存放将ＮＣ代码分词后的结果 董帅 2013-4-3
 	public List<string> CodeForAll = new List<string>();
 	public List<List<string>> TempCodeList = new List<List<string>>();
 	
@@ -312,13 +364,20 @@ public class ControlPanel : MonoBehaviour {
 	public int[] RealNumArray = new int[9];
 	public string[] TempCodeArray = new string[9];
 	
+	// 当前显示的开始行索引和结束行索引 董帅 2013-4-2
 	public int StartRow = 0;
-	public int EndRow = 0;
+	public int EndRow = 9;
+	public int MDIStartRow = 0;
+	public int MDIEndRow = 9;
+	//检索结果标识
+	public bool NotFoundWarn = false;
 	public int TotalCodeNum = 0;
 	public int RealCodeNum = 1;
 	public int HorizontalNum = 1;
 	public int VerticalNum = 1;
+	//The total amount of satisfatory NC files in the Gcode directory.
 	public int TotalListNum = 0;
+	//The location of current file in the NC file list.
 	public int RealListNum = 1;
 	public string Code01 = "";
 	public string Code02 = "";
@@ -329,31 +388,11 @@ public class ControlPanel : MonoBehaviour {
 	public string Code07 = "";
 	public string Code08 = "";
 	public string Code09 = "";
-	public string CodeName01 = "";
-	public int CodeSize01 = 0;
-	public string UpdateDate01 = "";
-	public string CodeName02 = "";
-	public int CodeSize02 = 0;
-	public string UpdateDate02 = "";
-	public string CodeName03 = "";
-	public int CodeSize03 = 0;
-	public string UpdateDate03 = "";
-	public string CodeName04 = "";
-	public int CodeSize04 = 0;
-	public string UpdateDate04 = "";
-	public string CodeName05 = "";
-	public int CodeSize05 = 0;
-	public string UpdateDate05 = "";
-	public string CodeName06 = "";
-	public int CodeSize06 = 0;
-	public string UpdateDate06 = "";
-	public string CodeName07 = "";
-	public int CodeSize07 = 0;
-	public string UpdateDate07 = "";
-	public string CodeName08 = "";
-	public int CodeSize08 = 0;
-	public string UpdateDate08 = "";
+	public string[] CodeName = new string[8];
+	public int[] CodeSize = new int[8];
+	public string[] UpdateDate = new string[8];
 	public string current_filename = "";
+	//The location of current file in the NC file list. Co-operate with arqument RealFileList.
 	public int current_filenum = 0;
 	
 	public GUIText EDITText;
@@ -370,20 +409,64 @@ public class ControlPanel : MonoBehaviour {
 	public int coo_setting_1 = 1;
 	public int coo_setting_2 = 1;
 	
-	public bool power_notification = true;
+	public bool power_notification = false;
 	Rect power_notifi_window = new Rect(Screen.width / 2f, Screen.height / 2f, 200f, 100f); 
 	public float move_rate = 1f;
 	
-    //内容--姓名--日期
+	//设定界面修改---张振华---03.11
+	public GUIStyle sty_OffSet_Coo_mini;
+	public GUIStyle sty_OffSet_Coo_mid;
+	public float argu_setting_cursor_y = 61.5f;
+	public float argu_setting_cursor_w = 16f;
+	public int argu_setting = 1;
+	//设定界面修改---张振华---03.11
+	
+	//位置界面功能完善---宋荣 ---03.09
+	public bool operationBottomScrInitial=false;//position模式下按下操作键的初始界面显示标志
+	public bool operationBottomScrExecute=false;//position模式下按下执行界面显示标志
+	public bool posTimeAndNumber = false;
+	public bool partsNumBlink=false;//零件数闪烁标志
+	public bool runtimeIsBlink=false;//运行时间闪烁标志
+	public bool posOperationMode=false;//position下按下操作键,用来屏蔽第一、二、三个按钮的操作。
+	public int statusBeforeOperation=-1;
+	//位置界面功能完善---宋荣 ---03.09
+	
+	//内容--姓名--日期
 	//变量
 	//内容--定义布尔变量ProgEDITAt，用于选择程序时，前加@
 	//姓名--刘旋
 	//日期--2013-3-18
 	public bool ProgEDITAt=false;
+	public int at_position = -1;
+	public int at_page_number = -1;
 	
+	//刀偏界面完善---张振华---03.30
+	public GUIStyle sty_MostWords_ToolOffSet;        //刀偏界面字体
+	public int ToolOffSetPage_num = 0;
+	public int number = 0;
+	public int tool_setting = 1 ; //值为1-32，代表刀偏界面的每一个空格
+	public float tool_setting_cursor_y = 81.5f; //刀偏界面光标水平方向的值
+	public float tool_setting_cursor_w = 91.5f; //刀偏界面光标垂直方向的值
+	//刀偏界面完善---张振华---03.30
+	
+	float left = -300f;
+	bool show_off = false;
+	public float remaining_x = 0; //剩余移动量X
+	public float remaining_y = 0; //剩余移动量Y
+	public float remaining_z = 0; //剩余移动量Z
+	public bool auto_running = false; //AUTO正在运行
+	public bool x_return_zero = false; //X轴回零
+	public bool y_return_zero = false; //Y轴回零
+	public bool z_return_zero = false; //Z轴回零
+	#endregion
 	
 	void Awake () 
 	{
+		transform.name = "MainScript";
+		gameObject.AddComponent("ModelInitialize");
+		gameObject.AddComponent("NCCodeFormat");
+		gameObject.AddComponent("ShowOuterSkin");
+		NCCodeFormat_Script=gameObject.GetComponent<NCCodeFormat>();
 		gameObject.AddComponent("PositionModule");
 		Position_Script = gameObject.GetComponent<PositionModule>();
 		gameObject.AddComponent("SystemModule");//添加脚本，姓名--刘旋，时间--2013-4-24
@@ -410,10 +493,12 @@ public class ControlPanel : MonoBehaviour {
 		MachineFunction_Script = gameObject.GetComponent<MachineFunctionModule>();
 		gameObject.AddComponent("AuxiliaryFunctionModule");
 		AuxiliaryFunction_Script = gameObject.GetComponent<AuxiliaryFunctionModule>();
-		
-		GameObject.Find("move_control").AddComponent("MoveControl");
+		//GameObject move_obj = GameObject.Find("GameObjcet")
+		//GameObject.Find("move_control").AddComponent("MoveControl");
+		LoadScriptOfAudio();
 		MoveControl_script = GameObject.Find("move_control").GetComponent<MoveControl>();
-		GameObject.Find("spindle_control").AddComponent("SpindleControl");
+		AuxiliaryMoveModule_Script = GameObject.Find("move_control").GetComponent<AuxiliaryMoveModule>();
+		//GameObject.Find("spindle_control").AddComponent("SpindleControl");
 		SpindleControl_script = GameObject.Find("spindle_control").GetComponent<SpindleControl>();
 		gameObject.AddComponent("CooSystem");
 		gameObject.AddComponent("AutoMove");
@@ -457,6 +542,7 @@ public class ControlPanel : MonoBehaviour {
 			ProgHAN = false;
 			ProgJOG = false;
 			ProgREF = false;
+			editDisplay=true;
 			break;
 		case 2:
 			t2d_ModeSelect = t2d_ModeSelectDNC;
@@ -471,7 +557,7 @@ public class ControlPanel : MonoBehaviour {
 			break;
 		case 3:
 			t2d_ModeSelect = t2d_ModeSelectAUTO;
-			MenuDisplay = "MEM";//内容--将AUTO修改为MEM，姓名--刘旋，时间--2013-3-25
+			MenuDisplay = "MEM";
 			ProgEDIT = false;
 			ProgDNC = false;
 			ProgAUTO = true;
@@ -490,6 +576,7 @@ public class ControlPanel : MonoBehaviour {
 			ProgHAN = false;
 			ProgJOG = false;
 			ProgREF = false;
+			editDisplay=false;
 			break;
 		case 5:
 			t2d_ModeSelect = t2d_ModeSelectHANDLE;
@@ -517,7 +604,7 @@ public class ControlPanel : MonoBehaviour {
 		case 7:
 			t2d_ModeSelect = t2d_ModeSelectREF;
 			MenuDisplay = "REF";
-			MoveControl_script.speed_to_move = 0.6F;//内容--归零操作的实际速度为36m/min=0.6m/s，而实际速度RunningSpeed=speed—to-move*move-rate，因此speed-to-move应设为0.6,姓名--刘旋，时间--2013-4-8
+			MoveControl_script.speed_to_move = 0.6F;//内容--归零操作的实际速度为5m/min=(5/60)m/s，而实际速度RunningSpeed=speed—to-move*move-rate，因此speed-to-move应设为5/60,姓名--刘旋，时间--2013-4-8
 			ProgEDIT = false;
 			ProgDNC = false;
 			ProgAUTO = false;
@@ -739,6 +826,7 @@ public class ControlPanel : MonoBehaviour {
 		sty_Alarm.normal.textColor = Color.white;
 		
 		sty_BottomChooseMenu.font = (Font)Resources.Load("font/monoMMM_5");
+		//sty_BottomChooseMenu.font = (Font)Resources.Load("font/times");
 		sty_BottomChooseMenu.fontSize = 14;
 		
 		sty_ProgEditProgNum.font = (Font)Resources.Load("font/monoMMM_5");
@@ -765,6 +853,7 @@ public class ControlPanel : MonoBehaviour {
 		sty_MostWords.fontSize = 15;
 		//sty_MostWords.normal.textColor = Color.cyan;
 		
+		//sty_Code.font = (Font)Resources.Load("font/dutch");
 		sty_Code.fontSize = 17;
 		sty_Code.fontStyle = FontStyle.Bold;
 		
@@ -776,7 +865,6 @@ public class ControlPanel : MonoBehaviour {
 		sty_Mode.fontSize=15;
 		sty_Mode.fontStyle=FontStyle.Bold;
 		sty_Mode.normal.textColor=Color.blue;
-		
 		
 		sty_ProgEDITListWindowNum.font = (Font)Resources.Load("font/monoMMM_5");
 		sty_ProgEDITListWindowNum.fontSize = 13;
@@ -829,6 +917,8 @@ public class ControlPanel : MonoBehaviour {
 		
 		sty_ClockStyle.fontSize = 14;
 		
+		sty_BlueCursor.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/Blue");
+		
 		sty_EDITLabel.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EDITLabel");
 		sty_EDITLabelWindow.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EditWindow");
 		sty_EDITLabelBar_1.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EditBar01");
@@ -837,7 +927,8 @@ public class ControlPanel : MonoBehaviour {
 		sty_ProgSharedWindow.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/ProgSharedWindow");
 		
 		sty_EDITCursor.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EditCursor");
-		
+		sty_EDITCursor.fontSize = 17;
+		sty_EDITCursor.fontStyle = FontStyle.Bold;
 		sty_EDITTextField.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EditCursor");
 		sty_EDITTextField.normal.textColor = Color.yellow;
 		sty_EDITTextField.fontSize = 17;
@@ -851,11 +942,12 @@ public class ControlPanel : MonoBehaviour {
 		sty_OffSet_Coo.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/offset_coo");
 		width = 670F;
 		height = 650F;
-		PanelWindowRect = new Rect(0,0,width,height);
+		left = -700f;
+		PanelWindowRect = new Rect(left, 30f, width, height);
 		EDITText.enabled = false;
 		EDITText.font = sty_Code.font;
 		EDITText.fontSize = sty_Code.fontSize;
-		EDITText.fontStyle=FontStyle.Bold;
+		//EDITText.fontStyle=FontStyle.Bold;
 		EDITText.text = "";
 		ProgEDITCusorPos = 57f;
 		CursorText.enabled = false;
@@ -868,11 +960,226 @@ public class ControlPanel : MonoBehaviour {
 		coo_setting_2 = 1;
 		
 		sty_SettingsBG.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/SettingsBG");
+		
+		//设定界面修改---陈振华---03.11
+		sty_OffSet_Coo_mini.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/offset_coo_mini");
+		sty_OffSet_Coo_mid.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/offset_coo_mid");
+		//设定界面修改---陈振华---03.11
+		
+		sty_EditListTop.normal.background = (Texture2D)Resources.Load("Texture_Panel/Label/EditListTop");
+		OffSetTool = true;
+		OffSetSetting = false;
+		OffSetCoo = false;
+		
+		//刀偏界面完善---张振华---03.30
+		sty_MostWords_ToolOffSet.font = (Font)Resources.Load("font/simfang");
+		sty_MostWords_ToolOffSet.fontSize = 13;
+		ToolOffSetPage_num = 0;    //页面数
+		number = 0;                            //序号
+		tool_setting = 1;                     //黄色背景序号
+	    tool_setting_cursor_y = 81.5f;
+	    tool_setting_cursor_w = 91.5f;
+		//刀偏界面完善---张振华---03.30
+		
+		//界面参数初始化
+		PartsNum = 0; //加工零件数
+		SpindleSpeed = 0; //S主轴转速
+		ToolNo = 0; //T刀具号
+		RunningTimeH = 0; //运行时
+		RunningTimeM = 0; //运行分
+		CycleTimeH = 0; //循环时间时
+		CycleTimeM = 0; //循环时间分
+		CycleTimeS = 0; //循环时间秒
+		RunningSpeed = 0; //实速度
+		SACT = 0; //相当于转速
+		
+		/*---------------------AUTO模式下测试数据-----------------------*/
+			CodeForAUTO.Add("O0001");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("G21");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("M06");
+		CodeForAUTO.Add("T01");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("G54");
+		CodeForAUTO.Add("G90");
+		CodeForAUTO.Add("G00");
+		CodeForAUTO.Add("X0.");
+		CodeForAUTO.Add("Y0.");
+		CodeForAUTO.Add("Z50.");
+		CodeForAUTO.Add("Z51.");
+		CodeForAUTO.Add("Z52.");
+		CodeForAUTO.Add("Z53.");
+		CodeForAUTO.Add("Z54.");
+		CodeForAUTO.Add("Z55.");
+		CodeForAUTO.Add("Z56.");
+		CodeForAUTO.Add("Z57.");
+		CodeForAUTO.Add("Z58.");
+		CodeForAUTO.Add("Z59.");
+		CodeForAUTO.Add("Z60.");
+		CodeForAUTO.Add("Z61.");
+		CodeForAUTO.Add("Z62.");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("M3");
+		CodeForAUTO.Add("S800");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("M08");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("X0.646");
+		CodeForAUTO.Add("Y-8.648");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("G55");
+		CodeForAUTO.Add("S1000");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("G70");
+		CodeForAUTO.Add("X5.5");
+		CodeForAUTO.Add(";");
+		CodeForAUTO.Add("M3");
+		CodeForAUTO.Add(";");
+		SeparatePos = new int[100000];
+		AUTOSeparatePos=new int[100000];
+		//AutoDisplayFindRows(2,true);
 	}
+	
+	void LoadScriptOfAudio()
+	{
+		gameObject.AddComponent("AudioSource");
+		gameObject.audio.loop = true;
+		gameObject.audio.playOnAwake = false;
+		gameObject.audio.clip = (AudioClip)Resources.Load("Audio/move");
+		gameObject.audio.minDistance = 30f;
+		GameObject move_obj;
+		try
+		{
+			move_obj = GameObject.Find("GameObject");
+		}
+		catch
+		{
+			Debug.LogError("Need to add more Empty GameObject by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		if(move_obj == null)
+		{
+			Debug.LogError("Need to add more Empty GameObject by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		move_obj.transform.name = "move_control";
+		move_obj.AddComponent("MoveControl");
+		move_obj.AddComponent("AudioSource");
+		move_obj.audio.loop = true;
+		move_obj.audio.playOnAwake = false;
+		move_obj.audio.clip = (AudioClip)Resources.Load("Audio/move");
+		move_obj.audio.minDistance = 30f;
+		move_obj.AddComponent("AuxiliaryMoveModule");
+		GameObject spindle_obj;
+		try
+		{
+			spindle_obj = GameObject.Find("GameObject");
+		}
+		catch
+		{
+			Debug.LogError("Need to add more Empty GameObject by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		if(spindle_obj == null)
+		{
+			Debug.LogError("Need to add more Empty GameObject by manually: Error caused by Eric Jiang.");
+			return;
+		}
+		spindle_obj.transform.name = "spindle_control";
+		spindle_obj.AddComponent("SpindleControl");
+		spindle_obj.AddComponent("AudioSource");
+		spindle_obj.audio.loop = true;
+		spindle_obj.audio.playOnAwake = false;
+		spindle_obj.audio.clip = (AudioClip)Resources.Load("Audio/spn");
+		spindle_obj.audio.minDistance = 30f;
+	}
+	
+	void ExchangeInt(ref int a, ref int b)
+	{
+		int temp;
+		temp = a;
+		a = b;
+		b = temp;
+	}
+	public void ExchangeVar()
+	{
+		List<string> CodeForExchage = null;
+		CodeForExchage = CodeForAll;
+		CodeForAll = CodeForMDI;
+		CodeForMDI = CodeForExchage;
+		int[] SepForExchange = null;
+		SepForExchange = SeparatePos;
+		SeparatePos = MDISeparatePos;  
+		MDISeparatePos = SepForExchange;
+		ExchangeInt(ref SelectEnd,ref MDISelectEnd);
+		ExchangeInt(ref SelectStart,ref MDISelectStart);
+		ExchangeInt(ref ProgEDITCusorH,ref MDIProgEDITCusorH);
+		ExchangeInt(ref ProgEDITCusorV,ref MDIProgEDITCusorV);
+		ExchangeInt(ref StartRow,ref MDIStartRow);
+		ExchangeInt(ref EndRow,ref MDIEndRow);
+	}
+	
+	public void AutoDisplayFindRows(int showRow,bool displayNormal)
+	{
+		
+		
+		Softkey_Script.calcSepo(CodeForAUTO,AUTOSeparatePos,320f);
+		this.autoDisplayNormal=displayNormal;
+		int index=0;
+		int irow=-1;
+		while(AUTOSeparatePos[index]!=0)
+		{
+			if(CodeForAUTO[AUTOSeparatePos[index]-1]==";") irow++;
+			if(irow==showRow) break;
+			index++;
+		}
+		//Debug.Log("index:"+index);
+		//Debug.Log("rrr"+irow);
+		//没找到的情况
+		if(irow!=showRow)
+		{
+			
+			
+		}
+		
+		int irowfrom=index;
+		while((irowfrom>0)&&(CodeForAUTO[AUTOSeparatePos[irowfrom-1]-1]!=";"))irowfrom--;
+		AutoRunItemRows.Clear();
+		//程序开始行
+		AutoRunItemRows.Add(irowfrom);
+		//程序结束行
+		AutoRunItemRows.Add(index);
+		
+		//Debug.Log("Ss"+irowfrom+"Ee"+index);
+		
+		int range=0;
+		if(displayNormal)
+			range=9;
+		else
+			range=4;
+		
+		AUTOStartRow=irowfrom/range*range;
+		AUTOEndRow=AUTOStartRow+range;
+		if(index>AUTOEndRow)
+		{
+			AUTOStartRow=irowfrom;
+			AUTOEndRow=irowfrom+range;
+		}
+
+	}
+	
+	
 	
 	void OnGUI()
 	{ 
 		//GUI.depth = 1;
+		if(show_off == false)
+		{
+			PanelWindowRect.x = left;
+			PanelWindowRect.width = width;
+			PanelWindowRect.height = height;
+		}
 		PanelWindowRect = GUI.Window(0, PanelWindowRect, PanelWindow, "Control Panel");   
 		
 		if(power_notification)
@@ -884,7 +1191,12 @@ public class ControlPanel : MonoBehaviour {
 	
 	void FixedUpdate ()
 	{
+		width = Mathf.Lerp(0.1f, 670f, 1.5f*Time.time);
+		height = Mathf.Lerp(0.1f, 650f, 1.5f*Time.time);
+		left = Mathf.Lerp(-300f, 300f, 1.5f*Time.time);
 		timeV += Time.deltaTime;	
+		if(timeV > 1)
+			show_off = true;
 	}
 	
 	void PowerState (int windowID)
@@ -919,7 +1231,7 @@ public class ControlPanel : MonoBehaviour {
 				Program_Script.Program();
 			}
 			
-			//设置界面 
+			//设置界面
 			if(SettingMenu)
 			{
 				//Offset模块显示
@@ -932,7 +1244,6 @@ public class ControlPanel : MonoBehaviour {
 				//System模块显示
 				System_Script.System();
 			}
-			//屏幕 基本固定区域
 			
 			//Message界面，姓名--刘旋，时间--2013-4-24
 			if(MessageMenu)
@@ -940,10 +1251,12 @@ public class ControlPanel : MonoBehaviour {
 				//Message模块显示
 				Message_Script.Message();
 			}
+			
+			//屏幕 基本固定区域
 			ScreenBottom();
 			
 			//打印编辑区域
-			ScreenPrintArea();
+			ScreenPrintArea();	
 			SpeedModule();//内容--增加行数SpeedModule用于控制时速度，姓名--刘旋，时间--2013-4-16
 		}
 		
@@ -1081,13 +1394,14 @@ public class ControlPanel : MonoBehaviour {
 
 		GUI.DragWindow();    
 	}
+	
 	void SpeedModule()//内容--增加行数SpeedModule用于控制时速度，姓名--刘旋，时间--2013-4-16
-		{
-		    if(MoveControl_script.x_p||MoveControl_script.x_n||MoveControl_script.y_p||MoveControl_script.y_n||MoveControl_script.z_p||MoveControl_script.z_n)
-			    RunningSpeed=Convert.ToInt32(MoveControl_script.speed_to_move*MoveControl_script.move_rate*1000*60);
-		    else 
-			    RunningSpeed=0;	
-		}
+	{
+		if((MoveControl_script.x_p||MoveControl_script.x_n||MoveControl_script.y_p||MoveControl_script.y_n||MoveControl_script.z_p||MoveControl_script.z_n) && !x_return_zero && !y_return_zero && !z_return_zero)
+			RunningSpeed=Convert.ToInt32(MoveControl_script.speed_to_move*MoveControl_script.move_rate*1000*60);
+		else 
+			RunningSpeed=0;	
+	}
 	
 	void ScreenNormallyOn() {
 		
@@ -1131,7 +1445,11 @@ public class ControlPanel : MonoBehaviour {
 		
 		if(ProgProtectWarn)
 			GUI.Label(new Rect(33f,372f/1000f*height,450f/1000f*width,300f/1000f*height),"WRITE PROTECT", sty_Warning);
-		
+		if(!ProgProtectWarn && NotFoundWarn)
+		{
+			GUI.Label(new Rect(33f,372f/1000f*height,450f/1000f*width,300f/1000f*height),"未找到字符!", sty_Warning);	
+			//NotFoundWarn = false;
+		}
 		if(EmergencyCtrl == false)
 			GUI.Label(new Rect(171f/1000f*width,395f/1000f*height,500f/1000f*width,300f/1000f*height),"*** ***", sty_Star);
 		 
@@ -1186,6 +1504,7 @@ public class ControlPanel : MonoBehaviour {
 			ScreenPower = false;
 		}
 	}
+	
 	void F_operationButton()//内容--控制电源关闭和开启时F0，F25,F50,F100按钮的状态，姓名--刘旋，时间--2013-4-12
 	{
 		if(ScreenPower==false)
@@ -1289,7 +1608,7 @@ public class ControlPanel : MonoBehaviour {
 				{
 					RapidMoveFlag = true;
 					MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
-					MoveControl_script.move_rate =1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-8
+					MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，不恒为1，与进给面板数值保持一致，姓名--刘旋，时间--2013-4-8
 					sty_ButtonRapid.normal.background = t2d_rapid_on_u;
 					sty_ButtonRapid.active.background = t2d_rapid_on_d;
 				}
@@ -1357,8 +1676,8 @@ public class ControlPanel : MonoBehaviour {
 						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8				
 						MoveControl_script.move_rate = move_rate;
 					}
-					if(MoveControl_script.Y_part.position.x - MoveControl_script.MachineZero.x >= 0.5f)
-					    MoveControl_script.y_n = false;
+					if(MoveControl_script.MachineZero.x - MoveControl_script.Y_part.localPosition.x >= 0.5f)
+						MoveControl_script.y_n = false;
 					else
 						MoveControl_script.y_n = true;
 				}
@@ -1403,7 +1722,7 @@ public class ControlPanel : MonoBehaviour {
 						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
 						MoveControl_script.move_rate = move_rate;
 					}
-					if(MoveControl_script.MachineZero.z - MoveControl_script.X_part.position.z >= 0.8f)
+					if(MoveControl_script.MachineZero.z - MoveControl_script.X_part.localPosition.z >= 0.8f)
 						MoveControl_script.x_n = false;
 					else
 						MoveControl_script.x_n = true;
@@ -1449,7 +1768,7 @@ public class ControlPanel : MonoBehaviour {
 						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
 						MoveControl_script.move_rate = move_rate;
 					}
-					if(MoveControl_script.MachineZero.y - MoveControl_script.Z_part.position.y >= 0.51f)
+					if(MoveControl_script.MachineZero.y - MoveControl_script.Z_part.localPosition.y >= 0.51f)
 						MoveControl_script.z_n = false;
 					else
 						MoveControl_script.z_n = true;
@@ -1484,7 +1803,6 @@ public class ControlPanel : MonoBehaviour {
 					MoveControl_script.move_rate = 1f;//内容--归零模式下，实际进给速率倍率的修改，恒为1,姓名--刘旋，时间--2013-4-11
 					MoveControl_script.speed_to_move = 0.6F;//内容--归零操作的实际速度为36m/min=0.6m/s，而实际速度RunningSpeed=speed—to-move*move-rate，因此speed-to-move应设为0.6,姓名--刘旋，时间--2013-4-8
 					MoveControl_script.x_p = true;
-					//MoveControl_script.move_flag=true;
 				}
 				else
 					power_notification = true;
@@ -1511,32 +1829,32 @@ public class ControlPanel : MonoBehaviour {
 					if(ProgJOG)
 					{
 						if(RapidMoveFlag)
-					{
-						MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
-						MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
-						switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
-							{
-						    case 0://模式0（即;F0状态）
-									MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
-								    break;
-							case 1://模式0（即;F25状态）
-								    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
-								    break;
-							case 2://模式0（即;F50状态）
-									MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
-								    break;
-							case 3://模式0（即;F100状态）
-								    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
-								    break;	
-									
-							}//增加内容到此  2013-4-9
-					}
-					else
-					{
-						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
-						MoveControl_script.move_rate = move_rate;
-					}
-						if(MoveControl_script.MachineZero.y - MoveControl_script.Z_part.position.y <= 0)
+						{
+							MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
+							MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
+							switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
+								{
+							    case 0://模式0（即;F0状态）
+										MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
+									    break;
+								case 1://模式0（即;F25状态）
+									    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
+									    break;
+								case 2://模式0（即;F50状态）
+										MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
+									    break;
+								case 3://模式0（即;F100状态）
+									    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
+									    break;	
+										
+								}//增加内容到此  2013-4-9
+						}
+						else
+						{
+							MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
+							MoveControl_script.move_rate = move_rate;
+						}
+						if(MoveControl_script.MachineZero.y - MoveControl_script.Z_part.localPosition.y <= 0)
 							MoveControl_script.z_p = false;
 						else
 							MoveControl_script.z_p = true;
@@ -1557,32 +1875,32 @@ public class ControlPanel : MonoBehaviour {
 					if(ProgJOG)
 					{
 						if(RapidMoveFlag)
-					{
-						MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
-						MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
-						switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
-							{
-						    case 0://模式0（即;F0状态）
-									MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
-								    break;
-							case 1://模式0（即;F25状态）
-								    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
-								    break;
-							case 2://模式0（即;F50状态）
-									MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
-								    break;
-							case 3://模式0（即;F100状态）
-								    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
-								    break;	
-									
-							}//增加内容到此  2013-4-9
-					}
-					else
-					{
-						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
-						MoveControl_script.move_rate = move_rate;
-					}
-						if(MoveControl_script.MachineZero.z - MoveControl_script.X_part.position.z <= 0)
+						{
+							MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
+							MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
+							switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
+								{
+							    case 0://模式0（即;F0状态）
+										MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
+									    break;
+								case 1://模式0（即;F25状态）
+									    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
+									    break;
+								case 2://模式0（即;F50状态）
+										MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
+									    break;
+								case 3://模式0（即;F100状态）
+									    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
+									    break;	
+										
+								}//增加内容到此  2013-4-9
+						}
+						else
+						{
+							MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8
+							MoveControl_script.move_rate = move_rate;
+						}
+						if(MoveControl_script.MachineZero.z - MoveControl_script.X_part.localPosition.z <= 0)
 						{
 							MoveControl_script.x_p = false;
 							//MoveControl_script.move_flag=false;
@@ -1600,10 +1918,7 @@ public class ControlPanel : MonoBehaviour {
 				}
 			}
 			else
-			{
 				MoveControl_script.x_p = false;
-				//MoveControl_script.move_flag=false;
-			}
 			
 			if(GUI.RepeatButton(new Rect(540f/1000f*width, 910f/1000f*height, 50f/1000f*width, 50f/1000f*height), "", sty_ButtonYP))
 			{
@@ -1612,32 +1927,32 @@ public class ControlPanel : MonoBehaviour {
 					if(ProgJOG)
 					{
 						if(RapidMoveFlag)
-					{
-						MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
-						MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
-						switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
-							{
-						    case 0://模式0（即;F0状态）
-									MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
-								    break;
-							case 1://模式0（即;F25状态）
-								    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
-								    break;
-							case 2://模式0（即;F50状态）
-									MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
-								    break;
-							case 3://模式0（即;F100状态）
-								    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
-								    break;	
-									
-							}//增加内容到此  2013-4-9
-					}
-					else
-					{
-						MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8						
-						MoveControl_script.move_rate = move_rate;
-					}
-						if(MoveControl_script.Y_part.position.x - MoveControl_script.MachineZero.x <= 0)
+						{
+							MoveControl_script.speed_to_move = 0.6F;//内容--JOG模式下，快常速为36m/min=(36/60)m/s,因此spee-to-move=36/60,姓名--刘旋，时间--2013-4-8
+							MoveControl_script.move_rate = 1f;//内容--JOG模式下，实际进给速率倍率的修改，恒为1，姓名--刘旋，时间--2013-4-11
+							switch(RapidSpeedMode)//内容--快常速四种状态作用于实际速度，姓名--刘旋，时间--2013-4-9
+								{
+							    case 0://模式0（即;F0状态）
+										MoveControl_script.speed_to_move=0*MoveControl_script.speed_to_move;//F0模式下，为停止，即：实际速度为0
+									    break;
+								case 1://模式0（即;F25状态）
+									    MoveControl_script.speed_to_move=0.25f*MoveControl_script.speed_to_move;//F25模式下，实际速度为快常速的25%
+									    break;
+								case 2://模式0（即;F50状态）
+										MoveControl_script.speed_to_move=0.5f*MoveControl_script.speed_to_move;//F50模式下，实际速度为快常速的50%
+									    break;
+								case 3://模式0（即;F100状态）
+									    MoveControl_script.speed_to_move=1f*MoveControl_script.speed_to_move;//F100模式下，实际速度等于快常速
+									    break;	
+										
+								}//增加内容到此  2013-4-9
+						}
+						else
+						{
+							MoveControl_script.speed_to_move = 0.16667F;//内容--JOG模式下，慢常速为10m/min=(10/60)m/s,因此spee-to-move=10/60,姓名--刘旋，时间--2013-4-8						
+							MoveControl_script.move_rate = move_rate;
+						}
+						if(MoveControl_script.MachineZero.x - MoveControl_script.Y_part.localPosition.x <= 0)
 							MoveControl_script.y_p = false;
 						else
 							MoveControl_script.y_p = true;
@@ -1683,8 +1998,9 @@ public class ControlPanel : MonoBehaviour {
 					}
 					else//内容--慢速模式下，F0按钮的功能。姓名--刘旋，时间--2013-4-9
 					{
+						
 				    }
-			   }//增加内容到此  2013-4-9
+			    }//增加内容到此  2013-4-9
 			}
 		}
 		
@@ -1714,8 +2030,9 @@ public class ControlPanel : MonoBehaviour {
 					}
 					else//内容--慢速模式下，F25按钮的功能。姓名--刘旋，时间--2013-4-9
 					{
+						
 				    }
-			   }//增加内容到此  2013-4-9
+			    }//增加内容到此  2013-4-9
 			}
 		}
 		
@@ -1747,7 +2064,7 @@ public class ControlPanel : MonoBehaviour {
 					else//内容--慢速模式下，F50按钮的功能。姓名--刘旋，时间--2013-4-9
 					{
 				    }
-			   }//增加内容到此  2013-4-9
+			    }//增加内容到此  2013-4-9
 			}
 		}
 		
@@ -1778,7 +2095,7 @@ public class ControlPanel : MonoBehaviour {
 					else//内容--慢速模式下，F100按钮的功能。姓名--刘旋，时间--2013-4-9
 					{
 				    }
-			   }//增加内容到此  2013-4-9
+			    }//增加内容到此  2013-4-9
 			}
 		}
 		
@@ -2042,7 +2359,101 @@ public class ControlPanel : MonoBehaviour {
 		yield return new WaitForSeconds(0.3f);
 		ScreenCover = false;	
 	}
-
+	
+	//设定界面修改---陈振华---03.11
+	//使设定输入右对齐，顺序号停止参数
+	public string ArguStringGet(string StrValue)
+	{
+		string DisplayStr = "";
+		if(StrValue.Length == 1)
+		DisplayStr = "       "+StrValue;
+		else if(StrValue.Length == 2)
+		DisplayStr = "      "+StrValue;
+		else if(StrValue.Length == 3)
+		DisplayStr = "     "+StrValue;
+		else if(StrValue.Length == 4)
+		DisplayStr = "    "+StrValue;
+		else if(StrValue.Length == 5)
+		DisplayStr = "   "+StrValue;
+		else if(StrValue.Length == 6)
+		DisplayStr = "  "+StrValue;
+		else if(StrValue.Length == 7)
+		DisplayStr = " "+StrValue;
+		return DisplayStr;	
+	}
+	
+	//使设定输入右对齐，IO参数
+	public string ArguStringGet_IO(string StrValue)
+	{
+		string DisplayStr = "";
+		if(StrValue.Length == 1)
+			DisplayStr = " "+StrValue;
+		else if(StrValue.Length == 2)
+			DisplayStr = StrValue;
+		return DisplayStr;	
+	}
+	
+	//刀偏界面加入---陈振华---03.30
+	//格式化显示数字,刀偏界面
+	public string ToolStringGet (float StrValue) 
+	{
+		int intNum = 0;	
+		string DisplayStr = "";
+		intNum = (int)StrValue;
+		
+		if(intNum < 0)
+		{
+			if(intNum > -100 && intNum <= -10)
+				DisplayStr = "  " + intNum + ".";
+			else if(intNum > -10)
+				DisplayStr = "   " + intNum + ".";
+			else if(intNum <= -100 && intNum > -1000)
+				DisplayStr = " "+intNum + ".";
+			else
+				DisplayStr = ""+intNum + ".";
+		}
+		else if(intNum == 0)
+		{
+			if(StrValue < 0)
+				DisplayStr = "   -0.";
+			else		
+			    DisplayStr = "    0" + ".";
+		}
+		else
+		{
+			if(intNum < 100 && intNum >= 10)
+				DisplayStr = "   " + intNum + ".";
+			else if(intNum < 10)
+				DisplayStr = "    " + intNum + ".";
+			else if(intNum < 1000 && intNum >= 100)	
+				DisplayStr = "  " + intNum + ".";
+			else	
+				DisplayStr = " " + intNum + ".";
+		}
+		
+		intNum = (int)(Math.Abs(StrValue*10) % 10);
+		DisplayStr += intNum;
+		intNum = (int)(Math.Abs(StrValue*100) % 10);
+		DisplayStr += intNum;
+		intNum = (int)(Math.Abs(StrValue*1000) % 10);
+		DisplayStr += intNum;
+		return DisplayStr;	
+	}
+	
+	//刀偏界面加入---陈振华---03.30
+	//使刀偏界面的序号为3位
+	public string Tool_numberGet(int StrValue)
+	{
+		 string StringValue = StrValue.ToString();
+		 string DisplayStr = "";
+		 if(StringValue.Length == 1)
+			DisplayStr = "00"+StringValue;
+		 if(StringValue.Length == 2)
+			DisplayStr = "0"+StringValue;
+		 if(StringValue.Length == 3)
+			DisplayStr = StringValue;
+		  return DisplayStr;
+	}
 
 	string SingleCodeFormat (string OriCode) 
 	{
@@ -2108,6 +2519,6 @@ public class ControlPanel : MonoBehaviour {
 		}	
 		return AimCode.TrimEnd();
 	}
-
+	
 	
 }
